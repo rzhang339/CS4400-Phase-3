@@ -24,9 +24,30 @@ SELECT produceName from Produce WHERE produceType == *propertyType* AND itemAppr
 ## Adds property to Property table in database
 !! See below to get newId
 
-INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy, approvedBy) VALUES (*propertyName*, newId, *isPublic*, *size*, *isCommercial*, *streetAddress*, *city*, *zip*, *propertyType*, *email*)
+INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy, approvedBy) VALUES (*propertyName*, newId, *isPublic*, *size*, *isCommercial*, *streetAddress*, *city*, *zip*, *propertyType*, *email*, null)
 
 ## Gets id for the new property ** you must add one to this value and if
 ## this returns null, choose your start (0 or 1)
 
 SELECET MAX(id) FROM Property
+
+## Associates Produce growing with a Property
+
+INSERT INTO FarmGrows (id, produceName) VALUES (*id*, *produceName*)
+
+## Gets some of the information that represents the current owner's properties
+
+SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy FROM Property WHERE *email* = email
+
+## Gets number of visits for the Property
+## I feel like you might need to query this for each tuple in the above list
+## inputting the id of each tuple into this query but I am not sure how flask
+## works.  I used @s to show that it is not input from the front end but rather
+## input from the query itself?
+
+SELECT COUNT(*) FROM Visits where @id@ == id
+
+## Gets average rating for the visits to the Property
+## My same thoughts go for this one
+
+SELECT AVG(rating) FROM Visits where @id@ == id
