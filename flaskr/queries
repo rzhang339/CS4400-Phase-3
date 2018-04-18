@@ -1,0 +1,32 @@
+!! Overall !!
+!! Astericks surrouding a string represent an input from the front end !!
+!! All trues and falses must be converted to 1s and 0s respectively !!
+
+## Retrieves relevant User information given input from user on login screen
+## Retrieves userType for next page selection
+## Returns null if no User matches?
+
+SELECT username, password, userType FROM User WHERE email == *email* AND password == *password*
+
+## Adds visitor to User table in database
+
+INSERT INTO User (email, username, password, usertype) VALUES (*email*, *username*, *password*, 'visitor')
+
+## Adds owner to User table in database
+
+INSERT INTO User (email, username, password, userType) VALUES (*email*, *username*, *password*, 'owner')
+
+## Retrieves selections for produceType based on propertyType (propertyType
+## restrictions enforced in backend)
+
+SELECT produceName from Produce WHERE produceType == *propertyType* AND itemApproved == 1
+
+## Adds property to Property table in database
+!! See below to get newId
+
+INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy, approvedBy) VALUES (*propertyName*, newId, *isPublic*, *size*, *isCommercial*, *streetAddress*, *city*, *zip*, *propertyType*, *email*)
+
+## Gets id for the new property ** you must add one to this value and if
+## this returns null, choose your start (0 or 1)
+
+SELECET MAX(id) FROM Property
