@@ -1,2 +1,22 @@
-SELECT username, password FROM User WHERE email == *Front end entered email* AND password == *Front end entered password*
+!! Overall !!
+!! Astericks surrouding a string represent an input from the front end !!
 
+## Retrieves relevant User information given input from user on login screen
+## Retrieves userType for next page selection
+## Returns null if no User matches?
+
+SELECT username, password, userType FROM User WHERE email == *email* AND password == *password*
+
+## Adds visitor to User table in database
+
+INSERT INTO User (email, username, password, usertype) VALUES (*email*, *username*, *password*, 'visitor')
+
+## Adds owner to User table in database
+
+INSERT INTO User (email, username, password, userType) VALUES (*email*, *username*, *password*, 'owner')
+
+## Retrieves selections for produceType based on propertyType
+
+SELECT
+
+## Adds property to Property table in database
