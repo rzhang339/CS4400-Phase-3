@@ -1,0 +1,2 @@
+SELECT username, password FROM User WHERE email == *Front end entered email* AND password == *Front end entered password*
+
