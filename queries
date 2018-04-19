@@ -46,9 +46,3 @@ SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isC
 ## Gets some information that represents other owner's properties
 
 SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, visits, avgRating FROM (SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, COUNT(*) AS visits, AVG(rating) AS avgRating, email FROM Property NATURAL JOIN Visits  GROUP BY propertyName) AS T  WHERE *email* != T.email AND @@T.propertyName IS NOT NULL@@ AND approvedBy IS NOT NULL ORDER BY @@T.propertyName@@;
-
-## Search by text input and criteria other owner's properties
-
-SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, COUNT(*) AS visits, AVG(rating) AS avgRating  FROM Property NATURAL JOIN Visits WHERE *email* != email WHERE approved == 1 AND *email* != email AND *search* == *chosen attribute to search by* ORDER BY propertyName GROUP BY propertyName
-
-
