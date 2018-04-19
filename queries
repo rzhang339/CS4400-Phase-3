@@ -10,7 +10,7 @@ SELECT username, password, userType FROM User WHERE email == *email* AND passwor
 
 ## Adds visitor to User table in database
 
-INSERT INTO User (email, username, password, usertype) VALUES (*email*, *username*, *password*, 'visitor')
+INSERT INTO User (email, username, password, userType) VALUES (*email*, *username*, *password*, 'visitor')
 
 ## Adds owner to User table in database
 
@@ -24,30 +24,31 @@ SELECT produceName from Produce WHERE produceType == *propertyType* AND itemAppr
 ## Adds property to Property table in database
 !! See below to get newId
 
-INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy, approvedBy) VALUES (*propertyName*, newId, *isPublic*, *size*, *isCommercial*, *streetAddress*, *city*, *zip*, *propertyType*, *email*, null)
+INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy) VALUES (*propertyName*, newId, *isPublic*, *size*, *isCommercial*, *streetAddress*, *city*, *zip*, *propertyType*, *email*)
 
 ## Gets id for the new property ** you must add one to this value and if
 ## this returns null, choose your start (0 or 1)
 
-SELECET MAX(id) FROM Property
+SELECT MAX(id) FROM Property
 
 ## Associates Produce growing with a Property
 
 INSERT INTO FarmGrows (id, produceName) VALUES (*id*, *produceName*)
 
 ## Gets some of the information that represents the current owner's properties
+## The @@s are default values, this will allow for reuse of this query when
+## sorting and searching.  We can discuss how the previous filter value and
+## the previous sorting direction/style will be persistent
 
-SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy FROM Property WHERE *email* = email
+SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, visits, avgRating FROM (SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, COUNT(*) AS visits, AVG(rating) AS avgRating, email FROM Property NATURAL JOIN Visits  GROUP BY propertyName) AS T  WHERE *email* = T.email AND @@T.propertyName IS NOT NULL@@ ORDER BY @@T.propertyName@@;
 
-## Gets number of visits for the Property
-## I feel like you might need to query this for each tuple in the above list
-## inputting the id of each tuple into this query but I am not sure how flask
-## works.  I used @s to show that it is not input from the front end but rather
-## input from the query itself?
 
-SELECT COUNT(*) FROM Visits where @id@ == id
+## Gets some information that represents other owner's properties
 
-## Gets average rating for the visits to the Property
-## My same thoughts go for this one
+SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, visits, avgRating FROM (SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, approvedBy, COUNT(*) AS visits, AVG(rating) AS avgRating, email FROM Property NATURAL JOIN Visits  GROUP BY propertyName) AS T  WHERE *email* != T.email AND @@T.propertyName IS NOT NULL@@ AND approvedBy IS NOT NULL ORDER BY @@T.propertyName@@;
 
-SELECT AVG(rating) FROM Visits where @id@ == id
+## Search by text input and criteria other owner's properties
+
+SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, COUNT(*) AS visits, AVG(rating) AS avgRating  FROM Property NATURAL JOIN Visits WHERE *email* != email WHERE approved == 1 AND *email* != email AND *search* == *chosen attribute to search by* ORDER BY propertyName GROUP BY propertyName
+
+
