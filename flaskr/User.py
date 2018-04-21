@@ -1,5 +1,5 @@
 import pymysql
-from flask import request, session
+from flask import request, session, Response
 import hashlib
 from flaskr import app, db
 
@@ -14,18 +14,20 @@ class User():
         type = json['type']
         
         cursor = db.cursor()
-
-        try:
-            cursor.execute("INSERT INTO User (email, username, password, userType) VALUES ('" \
+        sql_string = "INSERT INTO User (email, username, password, userType) VALUES ('" \
                 + email + "', '" \
                 + username + "', '" \
                 + password + "', '" \
-                + type + "');")
-        except (pymysql.Error, pymysql.Warning) as e:
-            print (e)
-            return
+                + type + "');"
 
-        return User.hash_password(json['password'])
+        try:
+            cursor.execute(sql_string)
+        except (pymysql.Error, pymysql.Warning) as e:
+            cursor.close()
+            return "Invalid"
+
+        cursor.close()
+        return "Registered"
 
     @staticmethod
     def login():
@@ -34,18 +36,22 @@ class User():
         password = User.hash_password(json['password'])
 
         cursor = db.cursor(pymysql.cursors.DictCursor)
+        sql_string = "SELECT username, password, userType FROM User WHERE email = '" \
+                + email + "' AND password = '" + password + "'"
 
         try:
-            cursor.execute("SELECT username, password, userType FROM User WHERE email = '" \
-                + email + "' AND password = '" + password + "'")
+            cursor.execute(sql_string)
         except (pymysql.Error, pymysql.Warning) as e:
-            print(e)
-            return
-        print (cursor)
-        if len(cursor.fetchall()) != 0:
-            user = cursor.fetchone()
+            cursor.close()
+            return "Invalid"
+
+        user = cursor.fetchone()
+        cursor.close()
+        if user is not None:
+            print (user)
             if 'user' in session.keys():
                 return "Already Logged In"
+            user['email'] = email
             session['user'] = user
             return "Log In"
         else:
@@ -53,8 +59,11 @@ class User():
 
     @staticmethod
     def logout():
-        session.pop('user', None)
-        return "logout"
+        if 'user' not in session.keys():
+            return "Already Logged Out"
+        else:
+            session.pop('user', None)
+            return "logout"
 
     def hash_password(password):
         return hashlib.md5(bytes(password.encode())).hexdigest()
