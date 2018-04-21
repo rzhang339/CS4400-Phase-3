@@ -1,0 +1,327 @@
+• Login
+"SELECT username, password, userType
+FROM User
+WHERE email = '" + email + "' AND password = '" + password + "';"
+
+• Register visitor, need to add restrictions in front end
+"INSERT INTO User (email, username, password, userType)
+VALUES ('" + email + "', '" + username + "', '" + password + "', '" + visitor + "');"
+
+• Register owner, need to add restrictions in front end and query for add property found later in this doc
+"INSERT INTO User (email, username, password, userType)
+VALUES ('" + email + "', '" + username + "', '" + password + "', '" + owner + "');"
+
+• Add a new property
+"INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy)
+VALUES ('" + propertyName + "', '" + id + "', '" + isPublic + "', '" + size + "', '" + isCommercial + "', '" + streetAddress + "', '" + city + "', '" + zip + "', '" + propertyType + "', '" + ownedBy + "');"
+
+## Farm animal drop down:
+"SELECT produceName
+FROM Produce
+WHERE ProduceType == 'animal'
+ORDER BY produceName ASC;"
+
+## Farm crop drop down:
+"SELECT produceName
+FROM Produce
+WHERE ProduceType == 'fruit' OR ProduceType == 'nut' OR ProduceType == 'vegetable' OR ProduceType == 'flower'
+ORDER BY produceName ASC;"
+
+## Garden crop drop down:
+"SELECT produceName
+FROM Produce
+WHERE ProduceType == 'vegetable' OR ProduceType == 'flower'
+ORDER BY produceName ASC;"
+
+## Orchard crop drop down:
+"SELECT produceName
+FROM Produce
+WHERE ProduceType == 'fruit' OR ProduceType == 'nut';"
+"INSERT INTO FarmGrows (id, produceName)
+VALUES ('" + id + "', '" + produceName + "')
+ORDER BY produceName ASC;"
+
+• Your properties table, need to add functionality to change ratings to "n/a" when ratings == null
+"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS yourProperties
+FROM Property LEFT JOIN
+    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
+     FROM Visits Group By p_id)
+WHERE ownedBy == '" + logged_in_user + "'
+ORDER BY name ASC;"
+
+## search by drop down menu and text box
+"SELECT *
+FROM yourProperties
+WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+
+## detailed property view
+"SELECT *
+FROM yourProperties
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT username, email
+FROM User
+WHERE email == ownedBy;"
+"SELECT produceName, produceType
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + selectedPropertyID + "';"
+
+• View other owner’s properties
+"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings into otherProperties
+FROM Property LEFT JOIN
+    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
+     FROM Visits Group By p_id)
+WHERE approvedBy != null AND ownedBy != '" + logged_in_user + "'
+ORDER BY name ASC;"
+
+## search by drop down menu and text box
+"SELECT *
+FROM otherProperties
+WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+
+## detailed property view
+"SELECT *
+FROM otherProperties
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT username, email
+FROM User
+WHERE email == ownedBy;"
+"SELECT produceName, produceType
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + selectedPropertyID + "';"
+
+• Manage a property
+## see above for add new crop
+
+## get property type and ID
+"SELECT propertyType, id
+FROM Property
+WHERE id == '" + currentPropertyID + "';"
+
+## update property attributes, delete all visits, set to unconfirmed
+"UPDATE Property
+SET '" + updatedAttribute + "' = '" + updatedAttributeValue + "'
+WHERE id == '" + currentPropertyID + "';"
+"DELETE FROM Visits
+WHERE id == '" + currentPropertyID + "';"
+"UPDATE Property
+SET approvedBy == null
+WHERE id == '" + currentPropertyID + "';"
+
+## remove a crop, put constraint where number of animals and crops must be >= 1
+"DELETE FROM FarmGrows
+WHERE id == '" + currentPropertyID + "' AND produceName == '" + selectedCrop + "';"
+"SELECT COUNT() AS numberOfAnimals
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + currentPropertyID + "' AND produceType == 'animal';"
+"SELECT COUNT() AS numberOfCrops
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + currentPropertyID + "' AND produceType != 'animal';"
+
+## select new crop drop down
+"SELECT produceName
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + currentPropertyID + "' AND produceType == '" + typeDependingOnPropertyType + "';"
+
+## add selected crop
+"INSERT INTO FarmGrows (id, produceName)
+VALUES ('" + currentPropertyID + "', '" + selectedProduce + "')
+"
+
+## list of current produce to check for duplicate produce approval requests
+"SELECT produceName, produceType
+FROM Produce"
+
+## request produce approval
+"INSERT INTO Produce (produceName, produceType, isApproved)
+VALUES ('" + newProduceName + "', '" + newProduceType + "', 0)"
+
+## delete property
+"DELETE FROM Property
+WHERE id  == '" + currentPropertyID + "';"
+
+• Search their properties
+"SELECT *
+FROM yourProperties
+WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+
+• Log out
+## raymond got this :)
+
+• View list of all visitors
+"SELECT *
+FROM USERS
+WHERE userType == 'visitor';"
+
+• View a list of all owners
+"SELECT *
+FROM USERS
+WHERE userType == 'owner';"
+
+• View all confirmed properties
+"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS confirmedProperties
+FROM Property LEFT JOIN
+    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
+     FROM Visits Group By p_id)
+WHERE approvedBy != null
+ORDER BY name ASC;"
+
+## search by drop down menu and text box
+"SELECT *
+FROM confirmedProperties
+WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+
+## detailed property view
+"SELECT *
+FROM confirmedProperties
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT username, email
+FROM User
+WHERE email == ownedBy;"
+"SELECT produceName, produceType
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + selectedPropertyID + "';"
+
+• View all unconfirmed properties
+"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, username  AS unconfirmedProperties
+FROM Property NATURAL JOIN User
+WHERE approvedBy == null
+ORDER BY name ASC;"
+
+## search by drop down menu and text box
+"SELECT *
+FROM unconfirmedProperties
+WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+
+## detailed property view
+"SELECT *
+FROM unconfirmedProperties
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT username, email
+FROM User
+WHERE email == ownedBy;"
+"SELECT produceName, produceType
+FROM FarmGrows NATURAL JOIN Produce
+WHERE id == '" + selectedPropertyID + "';"
+
+• View all approved animals/crops
+"SELECT *
+FROM Produce
+WHERE itemApproved == '1';"
+
+• View all pending animals/crops
+"SELECT *
+FROM Produce
+WHERE itemApproved == '0';"
+
+## approve a crop
+"UPDATE produce
+SET itemApproved == '1'
+WHERE produceName == '" + selectedProduce + "';"
+
+• Log out
+## handled by raymond :)
+
+• Add new animals/crops to the approved animal/crop list
+"INSERT INTO Produce (produceName, produceType, isApproved)
+VALUES ('" + newProduceName + "', '" + newProduceType + "', 0)"
+
+## search crops drop down
+"SELECT produceName
+FROM Produce
+WHERE produceType == '" + selectedProduceType + "';"
+
+## delete an approved crop
+"DELETE FROM Produce
+WHERE produceName == '" + selectedProduce + "';"
+
+• Validate owner requests to include a new animal/crop
+"UPDATE Produce
+SET itemApproved == '1'
+WHERE produceName == '" + selectedProduce + "';"
+
+• Validate a property that is invalid
+"UPDATE Property
+SET approvedBy == '" + adminName + "'
+WHERE id == '" + currentPropertyID + "';"
+
+• View a list of all owners in the system and a list of all visitors in the system
+
+## visitors
+"SELECT username, email, IFNULL(loggedVisits, 0) AS visitorTable
+FROM User LEFT JOIN
+    (SELECT email, COUNT() AS loggedVisits
+     FROM Visits
+     GROUP BY email) AS temp ON User.email == temp.email
+WHERE userType == 'visitor';"
+
+## visitors search bar
+"SELECT *
+FROM visitorTable
+WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+
+## owners
+"SELECT username, email, IFNULL(numProperties, 0) AS ownerTable
+FROM User LEFT JOIN
+    (SELECT ownedBy, COUNT() AS numProperties
+     FROM Property
+     GROUP BY ownedBy) AS temp ON User.email == temp.ownedBy
+WHERE userType == 'visitor';"
+
+## owner search bar
+"SELECT *
+FROM ownerTable
+WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+
+• Delete any visitor or owner account and all information tied to it
+"DELETE FROM User
+WHERE email == '" + selectedUser + "';"
+
+• Delete a visitor’s visit history log
+"DELETE FROM Visits
+WHERE email == '" + selectedUser + "';"
+
+• See which admin verified which property (as an additional column in the
+confirmed properties table)
+## included in confirmedProperties table
+
+• Visitor login table
+"SELECT name, streetAddress, city, zip, size, propertyType, isPublic,  isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS visitorLogin,
+FROM Property LEFT JOIN
+    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
+     FROM Visits Group By p_id)
+WHERE approvedBy != null
+ORDER BY name ASC;"
+
+# visitor login search bar
+"SELECT *
+FROM visitorLogin
+WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+
+## visitor login detail view
+"SELECT *
+FROM visitorLogin
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT username, email
+FROM User JOIN Property ON User.email == Property.ownedBy
+WHERE id == '" + selectedPropertyID + "';"
+"SELECT produceName
+FROM FarmGrows
+WHERE id == '" + selectedPropertyID + "';"
+
+## check to see if rating has been left
+"Select *
+FROM Visits
+WHERE id == '" + selectedPropertyID + "' && email == '" + logged_in_user + "';"
+
+## log a visit
+"INSERT INTO Visits (email, date, rating, id)
+VALUES ('" + logged_in_user + "', '" + date + "', '" + rating + "', '" + selectedPropertyID + "');"
+
+# unlog a visit
+"DELETE FROM Visits
+WHERE id == '" + selectedPropertyID + "' AND email == '" + logged_in_user"';"
+
+# your logged visits
+"SELECT propertyName, date, rating
+FROM Visits JOIN Property ON Visits.id == Property.id
+WHERE Visits.email == '" + logged_in_user + "';"
