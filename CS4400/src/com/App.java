@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
  */
 public class App {
     private JButton Login;
-    private JPanel panel1;
+    public JPanel panel1;
 
     public App() {
         Login.addActionListener(new ActionListener() {
