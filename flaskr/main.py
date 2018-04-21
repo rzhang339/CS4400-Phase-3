@@ -4,6 +4,7 @@ from flask import request
 import User
 import Property
 import Produce
+import Visits
 
 from flaskr import app
 
