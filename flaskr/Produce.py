@@ -7,22 +7,100 @@ class Produce():
 
     @staticmethod
     def add_produce():
-        parsed_json = request.get_json()
-        name = parsed_json['name']
-        type = parsed_json['type']
+        if 'user' in session.keys():
+            parsed_json = request.get_json()
+            name = parsed_json['name']
+            type = parsed_json['type']
 
-        cursor = db.cursor()
-        sql_string = "INSERT INTO Produce (produceName, produceType) VALUES ('" \
-                + name + "', '" + type + "')"
+            cursor = db.cursor()
+            sql_string = "INSERT INTO Produce (produceName, produceType) VALUES ('" \
+                    + name + "', '" + type + "')"
 
-        try:
-            cursor.execute(sql_string)
-        except (pymysql.Error, pymysql.Warning) as e:
-            print (e)
-            return
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
 
-        return "Added produce"
+            return "Added produce"
+        else:
+            return "not logged in"
 
-    
+    @staticmethod
+    def delete_produce():
+        if 'user' in session.keys():
+            parsed_json = request.get_json()
+            name = parsed_json['name']
+
+            cursor = db.cursor()
+            sql_string = "DELETE from Produce WHERE produceName = '" + name + "'"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return "Deleted produce"
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def approve_produce():
+        if 'user' in session.keys():
+            parsed_json = request.get_json()
+            name = parsed_json['name']
+
+            cursor = db.cursor()
+            sql_string = "UPDATE Produce SET itemApproved = 1 where produceName = '" + name + "'"  
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return "approved"
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def get_unapproved_produce():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName, produceType from Produce WHERE itemApproved = 0"  
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def get_approved_produce():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName, produceType from Produce WHERE itemApproved = 1"  
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
 
 app.add_url_rule('/add_produce', 'add_produce', Produce.add_produce, methods=['POST'])
+app.add_url_rule('/delete_produce', 'delete_produce', Produce.delete_produce, methods=['POST'])
+app.add_url_rule('/approve_produce', 'approve_produce', Produce.approve_produce, methods=['POST'])
+app.add_url_rule('/get_unapproved_produce', 'get_unapproved_produce', Produce.get_unapproved_produce, methods=['GET'])
+app.add_url_rule('/get_approved_produce', 'get_approved_produce', Produce.get_approved_produce, methods=['GET'])
