@@ -24,9 +24,19 @@
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
-            console.log(response);
-            alert(JSON.parse(response));
-        }
+            console.log(response.responseText);
+           	var j = JSON.parse(response.responseText);
+            var trHTML = '';
+            alert(response);
+            $.each(j, function(i, item) {
+            	
+            	console.log(item);
+    			$('<tr>').html(
+        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + item.isPublic + "</td><td>" + item.isCommercial + "</td><td>" + item.id + "</td><td>" + item.approvedBy + "</td><td>" + item.visits + "</td><td>" + item.avgRating + "</td>").appendTo('#homescreenOwnerTable');
+			});
+			
+       		
+        	}
 
 	    });
 	});

@@ -1,6 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
 
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+		var dic = {
+			'sort_by':"propertyName",
+			'order':'asc'
+		}
+
+      $.ajax({    //create an ajax request to display.php
+
+        type: "POST",
+        url: "http://localhost:5000/get_other_user_properties",  
+        data: JSON.stringify(dic),
+        contentType: "application/json;charset=utf-8",       
+        dataType: "text",   //expect html to be returned                
+        success: function(response){                    
+            $("#responsecontainer").html(response); 
+            alert(response);
+        },
+        complete: function(response){                    
+            $("#responsecontainer").html(response); 
+            console.log(response.responseText);
+           	var j = JSON.parse(response.responseText);
+            var trHTML = '';
+            alert(response);
+            $.each(j, function(i, item) {
+            	
+            	console.log(item);
+    			$('<tr>').html(
+        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + item.isPublic + "</td><td>" + item.isCommercial + "</td><td>" + item.id + "</td><td>" + item.approvedBy + "</td><td>" + item.visits + "</td><td>" + item.avgRating + "</td>").appendTo('#otherUserPropertyTable');
+			});
+			
+       		
+        	}
+
+	    });
+	});
 	<head>
 		<title>Owner Other </title>
 		<style type="text/css">
@@ -52,7 +90,7 @@
 	<body>
 		<center><h2>All Other Valid Properties:</h2></center>
 		<br>
-		<center><table border="1">
+		<center><table id="otherUserPropertyTable" border="1">
 			<thead>
 				<tr>
 					<th>Name</th>
