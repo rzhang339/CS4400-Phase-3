@@ -23,28 +23,37 @@ def apply_caching(response):
 
 @app.route('/')
 def index():
-	return render_template('Login.html')
-
-@app.route('/homescreen_owner')
-def homescreen_owner():
-	if (session['user']['userType'] == "owner"):
+	if 'user' not in session.keys():
+		return render_template('Login.html')
+	elif session['user']['userType'] == 'admin':
+		return render_template('HomescreenAdmin.html')
+	elif session['user']['userType'] == 'owner':
 		return render_template('HomescreenOwner.html')
-	else:
-		return "Invalid credentials"
-
-@app.route('/homescreen_visitor')
-def homescreen_visitor():
-	if (session['user']['userType'] == "visitor"):
+	elif session['user']['userType'] == 'visitor':
 		return render_template('HomescreenVisitor.html')
 	else:
-		return "Invalid credentials"
+		return "Invalid Credentials"
 
-@app.route('/homescreen_admin')
-def homescreen_admin():
-	if (session['user']['userType'] == "admin"):
-		return render_template('HomescreenAdmin.html')
-	else:
-		return "Invalid credentials"
+# @app.route('/homescreen_owner')
+# def homescreen_owner():
+# 	if (session['user']['userType'] == "owner"):
+# 		return render_template('HomescreenOwner.html')
+# 	else:
+# 		return "Invalid credentials"
+
+# @app.route('/homescreen_visitor')
+# def homescreen_visitor():
+# 	if (session['user']['userType'] == "visitor"):
+# 		return render_template('HomescreenVisitor.html')
+# 	else:
+# 		return "Invalid credentials"
+
+# @app.route('/homescreen_admin')
+# def homescreen_admin():
+# 	if (session['user']['userType'] == "admin"):
+# 		return render_template('HomescreenAdmin.html')
+# 	else:
+# 		return "Invalid credentials"
 
 if __name__ == '__main__':
 	app.run()

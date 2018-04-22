@@ -47,13 +47,7 @@
 				        success: function(text) {
 				        	console.log("logging in");
 				        	console.log(text);
-				        	if (text == 'owner') {
-								location.href="/homescreen_owner";
-							} else if (text == 'visitor') {
-								location.href="/homescreen_visitor";
-							} else if (text == 'admin') {
-								location.href="/homescreen_admin";
-							}
+				        	location.href = "/";
 				        }
 				    });
 				}
