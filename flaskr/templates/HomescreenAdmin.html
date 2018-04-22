@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+	<head>
+		<title>Welcome</title>
+		<center><h3>Welcome Admin!</h3></center>
+	</head>
+
+
+	<body>
+		<center><form>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">		</script>
+
+		<p><button id="viewVisitorsList" type="button">View Visitors List</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewVisitorsList').onclick = function() {
+                location.href="ViewVisitorsListScreen.html";
+            };
+        </script>
+		<p><button id="viewOwnersList" type="button">View Owners List</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewOwnersList').onclick = function() {
+                location.href="ViewOwnersListScreen.html";
+            };
+        </script>
+		<p><button id="viewConfirmedProperties" type="button">View Confirmed Properties</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewConfirmedProperties').onclick = function() {
+                location.href="ConfirmedPropertiesAdminScreen.html";
+            };
+        </script>
+		<p><button id="viewUnconfirmedProperties" type="button">View Unconfirmed Properties</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewUnconfirmedProperties').onclick = function() {
+                location.href="UnconfirmedPropertiesAdminScreen.html";
+            };
+        </script>
+		<p><button id="viewApproved" type="button">View Approved Animals and Crops</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewApproved').onclick = function() {
+                location.href="ApprovedAnimalsCropsScreen.html";
+            };
+        </script>
+		<p><button id="viewPending" type="button">View Pending Animals and Crops</button></p>
+        <script type="text/javascript">
+            document.getElementById('viewPending').onclick = function() {
+                location.href="PendingAnimalsCropsScreen.html";
+            };
+        </script>
+		<p><button id="logout" type="button">Log Out</button></p>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">       </script>
+            <script type="text/javascript">
+                document.getElementById('logout').onclick = function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:5000/logout",
+                        dataType: "text",
+                        success: function(text) {
+                            console.log("logging out");
+                            console.log(text);
+                            location.href = "/";
+                        }
+                    });
+                }
+            </script>
+
+        
+		</form></center>
+
+
+	</body>
+</html>

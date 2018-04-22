@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Approved Crops</title>
+		<style type="text/css">
+			.type {
+				float: left;
+				margin-left: 20px;
+				z-index: 1;
+			}
+			.search {
+				float: left;
+				margin-left: 100px;
+				z-index: 1;
+			}
+
+			.adminActions {
+				float: left;
+				margin-left: 100px;
+				z-index: 2;
+			}
+		</style>
+	</head>
+
+	<body>
+		<center><h2>Approved Animals/Crops</h2></center>
+		<br>
+		<center><table border="1">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+				</tr>
+			</thead>
+		</table></center>
+		<br>
+		<div class="type">
+			<center><p><select>
+				<option selected>Animal</option>
+				<option value="fruit">Fruit</option>
+				<option value="nut">Nut</option>
+				<option value="flower">Flower</option>
+				<option value="vegetable">Vegetable</option>
+			</select></p>
+			<p><input type="text" name="typeInput" placeholder="Enter Name"></p>
+			<p><button id="addToApprovedListButton" type="button">Add to Approved List</button></p></center>
+		</div>
+		<br>
+		<div class="adminActions">
+			<center><p><button id="deleteSelectionButton" type="button">Delete selection</button></p>
+			<p><button id="back" type="button">Back</button></p></center>
+			<script type="text/javascript">
+				document.getElementById('back').onclick = function() {
+					location.href="HomescreenAdmin.html";
+				};
+			</script>
+		</div>
+		<div class="search">
+			<center><p><select>
+				<option selected>Search by...</option>
+				<option value="propertyName">Name</option>
+				<option value="city">City</option>
+				<option value="propertyType">Type</option>
+				<option value="visits">Visits</option>
+			</select></p>
+			<p><input type="text" name="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Pending Crops</title>
+		<style type="text/css">
+			.adminActions {
+				position: absolute;
+				left: 47%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<center><h2>Pending Approval Animals/Crops</h2></center>
+		<br>
+		<center><table border="1">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Type</th>
+				</tr>
+			</thead>
+		</table></center>
+		<br>
+		<div class="adminActions">
+			<center><p><button id="approveSelectionButton" type="button">Approve Selection</button></p>
+			<p><button id="deleteSelectionButton" type="button">Delete Selection</button></p>
+			<p><button id="back" type="button">Back</button></p></center>
+			<script type="text/javascript">
+				document.getElementById('back').onclick = function() {
+					location.href="HomescreenAdmin.html";
+				};
+			</script>
+		</div>
+	</body>
+
+</html>

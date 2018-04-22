@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Visitors List</title>
+		<style type="text/css">
+			.search {
+				float: left;
+				margin-left: 20px;
+			}
+
+			.adminActions {
+				float: left;
+				margin-left: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<center><h2>All Visitors in System</h2></center>
+		<br>
+		<center><table border="1">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Logged Visits</th>
+				</tr>
+			</thead>
+		</table></center>
+		<br>
+		<div class="adminActions">
+			<center><p><button id="deleteVisitorAccountButton" type="button">Delete Visitor Account</button></p>
+			<p><button id="deleteLogHistoryButton" type="button">Delete Log History</button></p>
+			<p><button id="back" type="button">Back</button></p></center>
+			<script type="text/javascript">
+				document.getElementById('back').onclick = function() {
+					location.href="HomescreenAdmin.html";
+				};
+			</script>
+		</div>
+		<div class="search">
+			<center><p><select>
+				<option selected>Search by...</option>
+				<option value="propertyName">Name</option>
+				<option value="city">City</option>
+				<option value="propertyType">Type</option>
+				<option value="visits">Visits</option>
+			</select></p>
+			<p><input type="text" name="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
+		</div>
+	</body>
+
+</html>
