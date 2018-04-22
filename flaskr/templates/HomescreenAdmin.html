@@ -50,42 +50,23 @@
             };
         </script>
 		<p><button id="logout" type="button">Log Out</button></p>
-
-        <script type="text/javascript">
-            document.getElementById('logout').onclick = function() {
-                console.log("yeet")
-/*
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:5000/logout",
-                    dataType: "text",
-                    success: function(text) {
-                        //location.href="Login.html";
-                        console.log("yay");
-                        console.log(text);
-                    }
-
-                });
-*/
-                $.ajax({
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">       </script>
+            <script type="text/javascript">
+                document.getElementById('logout').onclick = function() {
+                    $.ajax({
                         type: "GET",
-                        url: "http://localhost:5000/get_session",
+                        url: "http://localhost:5000/logout",
                         dataType: "text",
                         success: function(text) {
-                            console.log("yay");
-                            //localStorage.setItem( "session", text);
+                            console.log("logging out");
                             console.log(text);
-                        },
-                        complete: function(msg) {
-                            console.log(msg)
+                            location.href = "/";
                         }
-
                     });
+                }
+            </script>
 
-            }
-
-        </script>
-        </script>
+        
 		</form></center>
 
 
