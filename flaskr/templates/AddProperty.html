@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+	<head>
+		<title>Add Property</title>
+		<center><h1>Add New Property</h1></center>
+	</head>
+
+
+	<body>
+		<center><form>
+		<p>Property Name*: <input type="text" name="propertyName"></p>
+		<p>Street Address*: <input type="text" name="streetAddress"></p>
+		<p>City*: <input type="textb" name="city"> 
+			Zip*: <input type="text" name="zip">
+			Acres*:<input type="text" name="acres"></p>
+		<p>Property Type*: <select id="propertyType" onChange="check()">
+		  	<option value="farm">Farm</option>
+		 	<option value="garden">Garden</option>
+		  	<option value="orchard">Orchard</option>
+		</select> 
+		<label id="animalLabel">Animal*:</label><select id="animalType">
+			<option value="" selected disabled hidden>Select...</option>
+		  	<option value="Cow">Cow</option>
+		 	<option value="Horse">Horse</option>
+		  	<option value="Pig">Pig</option>
+		  	<option value="Sheep">Sheep</option>
+		  	<option value="Goat">Goat</option>
+		  	<option value="Chicken">Chicken</option>
+		</select>
+		Crop*: <select>
+			<option value="" selected disabled hidden>Select...</option>
+		  	<option value="Fruits">Fruits</option>
+		 	<option value="Vegetables">Vegetables</option>
+		  	<option value="Nuts">Nuts</option>
+		  	<option value="Flowers">Flowers</option>
+		</select>
+		</p>
+		<p>	
+		Public?*: <select>
+		  	<option value="publicYes">yes</option>
+		 	<option value="publicNo">no</option>
+		</select></p>
+		<p>
+		Commercial?*: <select>
+		  	<option value="commercialYes">yes</option>
+		 	<option value="commercialNo">no</option>
+		</select></p>
+		<p><button id="addProperty" type="button">Add Property</button>
+		<button id="cancel" type="button">Cancel</button></p>
+		</form></center>
+
+
+		<script>
+			function check() {
+			    var value = document.getElementById("propertyType").value;
+			    
+			    
+			    if (value == "garden") {
+			        document.getElementById("animalType").style.display = "none";
+			        document.getElementById("animalLabel").innerHTML = "";
+			    } else {
+			    	document.getElementById("animalLabel").innerHTML = "Animals:*:"
+			    	document.getElementById("animalType").style.display = "block";
+			    }
+			    
+			    
+			}
+		</script>
+	</body>

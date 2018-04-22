@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Unconfirmed Properties</title>
+		<style type="text/css">
+			.search {
+				float: left;
+				margin-left: 20px;
+			}
+
+			.adminActions {
+				float: left;
+				margin-left: 100px;
+			}
+
+			.back {
+				float: left;
+				margin-left: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<center><h2>Unconfirmed Properties:</h2></center>
+		<br>
+		<center><table border="1">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Address</th>
+					<th>City</th>
+					<th>Zip</th>
+					<th>Size</th>
+					<th>Type</th>
+					<th>Public</th>
+					<th>Commerical</th>
+					<th>ID</th>
+					<th>Owner</th>
+				</tr>
+			</thead>
+		</table></center>
+		<br>
+		<div class="search">
+			<center><p><select>
+				<option selected>Search by...</option>
+				<option value="propertyName">Name</option>
+				<option value="city">City</option>
+				<option value="propertyType">Type</option>
+				<option value="visits">Visits</option>
+			</select></p>
+			<p><input type="text" name="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
+		</div>
+		<div class="adminActions">
+			<p><button id="manageSelectedPropertyButton" type="button">Manage Selected Property</button></p>
+		</div>
+		<div class="back">
+			<p><button id="back" type="button">Back</button></p>
+			<script type="text/javascript">
+				document.getElementById('back').onclick = function() {
+					location.href="HomescreenAdmin.html";
+				};
+			</script>
+		</div>
+	</body>
+
+</html>

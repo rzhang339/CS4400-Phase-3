@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+	<head>
+		<title>Manage Property</title>
+		<center><h1>Manage ______</h1></center>
+	</head>
+
+
+	<body>
+		<center><form>
+		<p>Name: <input type="text" name="gardenName"><label id="type">Type:</label></p>
+		<p>Address<input type="text" name="gardenAddress">
+			Public:<select>
+			<option value="publicTrue">True</option>
+			<option value="publicFalse">False</option>
+		</select>
+		</p>
+		<p>City: <input type="text" name="city"> 
+			Commercial:<select>
+			<option value="commercialTrue">True</option>
+			<option value="commercialFalse">False</option>
+		</select></p>
+		<p>zip: <input type="text" name="zip"><label id="idNum">ID:</label></p>
+		<p>Size(acres):<input type="text" name="acres"></p>
+		<p><select id="addedAnimals"></select>
+		<select id="addedCrops"></select></p>
+		<p><button id="deleteAnimalButton" type="button" onclick="removeAnimal()">Remove Animal</button>
+			<button id="deleteCropButton" type="button" onclick="removeCrop()">Remove Crop</button></p>
+		<p>Add new Animal:<select id="animalMenu">
+			<option value="" selected disabled hidden>Select approved animal...</option>
+			<option value="Cow">Cow</option>
+		 	<option value="Horse">Horse</option>
+		 	<option value="Goat">Goat</option>
+		 </select>
+		 	Add new crop:<select id="cropMenu">
+		 		<option value="" selected disabled hidden>Select approved crop...</option>
+		  	<option value="brocolli">Farm</option>
+		 	<option value="peppers">Peppers</option>
+		 	<option value="corn">Corn</option>
+
+		</select> </p>
+		<p><button id="addAnimalButton" type="button" onclick="addAnimal()">Add Animal to Property</button>
+		<button id="addCropButton" type="button" onclick="addCrop()">Add Crop to Property</button></p>
+		<p><button id="saveChanges" type="button">Save Changes (confirm property)</button></p>
+		<p><button id="deletePropertyButton" type="button">Delete Property</button>
+		<button id="backButtton" type="button">Back (Don't Save or Confirm)</button></p>
+		<p><label
+		</form></center>
+
+
+		<script>
+			function addAnimal() {
+				var x = document.getElementById("animalMenu").value;
+				
+				var m = document.getElementById("addedAnimals");
+				var option = document.createElement("option");
+				option.text = x;
+				m.add(option);
+			}
+
+			function addCrop() {
+				var x = document.getElementById("cropMenu").value;
+				
+				var m = document.getElementById("addedCrops");
+				var option = document.createElement("option");
+				option.text = x;
+				m.add(option);
+			}
+
+			function removeAnimal() {
+				var x = document.getElementById("addedAnimals");
+				x.remove(x.selectedIndex);
+			}
+
+			function removeCrop() {
+				var x = document.getElementById("addedCrops");
+				x.remove(x.selectedIndex);
+			}
+		</script>
+	</body>
+</html>
