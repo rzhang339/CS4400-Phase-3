@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+	<head>
+
+		<title>Owner Registration</title>
+		<center><h1>New Owner Registration</h1></center>
+	</head>
+
+
+	<body>
+		
+		<center><form id="ownerRegister" name="ownerRegister">
+		<p>Email*: <input type="text" id="emailInput" name="emailInput" required></p>
+		<p>Username*: <input type="text" id="username"></p>
+		<p>Password*: <input type="password" id="passwordInput"></p>
+		<p>Confirm Password*: <input type="password" id="confirmPasswordInput"></p>
+		<p>Property Name*: <input type="text" id="propertyName"></p>
+		<p>Street Address*: <input type="text" id="streetAddress"></p>
+		<p>City*: <input type="text" id="city"> 
+			Zip*: <input type="text" id="zip">
+			Acres*:<input type="text" id="acres"></p>
+		<p>Property Type*: <select id="propertyType">
+		  	<option value="farm">Farm</option>
+		 	<option value="garden">Garden</option>
+		  	<option value="orchard">Orchard</option>
+		</select> 
+		<label id="animalLabel">Animal*:</label><select id="animalType">
+			<option value="" selected disabled hidden>Select...</option>
+		  	<option value="Cow">Cow</option>
+		 	<option value="Horse">Horse</option>
+		  	<option value="Pig">Pig</option>
+		  	<option value="Sheep">Sheep</option>
+		  	<option value="Goat">Goat</option>
+		  	<option value="Chicken">Chicken</option>
+		</select>
+		Crop*: <select id="cropType">
+			<option value="" selected disabled hidden>Select...</option>
+		  	<option value="Fruits">Fruits</option>
+		 	<option value="Vegetables">Vegetables</option>
+		  	<option value="Nuts">Nuts</option>
+		  	<option value="Flowers">Flowers</option>
+		</select>
+		</p>
+		<p>	
+		Public?*: <select>
+		  	<option value="publicYes">yes</option>
+		 	<option value="publicNo">no</option>
+		</select></p>
+		<p>
+		Commercial?*: <select>
+		  	<option value="commercialYes">yes</option>
+		 	<option value="commercialNo">no</option>
+		</select></p>
+		<p><button id="registerOwner" type="button" onclick="checkFields()">Register Owner</button>
+		<button id="cancel" type="button">Cancel</button></p>
+		<script type="text/javascript">
+			document.getElementById('cancel').onclick = function() {
+				location.href = "/";
+			};
+			document.getElementById('propertyType').onchange = function() {
+			    var value = document.getElementById("propertyType").value;
+			    
+			    
+			    if (value == "garden" || value = "orchard") {
+			        document.getElementById("animalType").style.display = "none";
+			        document.getElementById("animalLabel").innerHTML = "";
+			    } else {
+			    	document.getElementById("animalLabel").innerHTML = "Animals:*:";
+			    	document.getElementById("animalType").style.display = "block";
+			    }
+			  
+			};
+		</script>
+		</form></center>
+		<p id="demo"></p>
+		<!-- <script>
+			document.getElementById('propertyType').onchange = function() {
+			    var value = document.getElementById("propertyType").value;
+			    
+			    
+			    if (value == "garden" || value = "orchard") {
+			        document.getElementById("animalType").style.display = "none";
+			        document.getElementById("animalLabel").innerHTML = "";
+			    } else {
+			    	document.getElementById("animalLabel").innerHTML = "Animals:*:";
+			    	document.getElementById("animalType").style.display = "block";
+			    }
+			  
+			}
+
+			function checkFields() {
+				var fields = ["emailInput", "username", "passwordInput", "confirmPasswordInput", "propertyName", "streetAddress", "city", "zip", "acres"]
+				var i, l = fields.length;
+				var fieldname;
+				for (i = 0; i < l; i++) {
+					fieldname = fields[i];
+					console.log(document.forms["ownerRegister"][fieldname].value)
+					if (document.forms["ownerRegister"][fieldname].value === "") {
+					  alert(fieldname + " can not be empty");
+					  return false;
+					}
+				}
+				if (docuemnt.getElementById(id).value == "") {
+					alert("Fill it out");
+				}
+			}
+		</script> -->
+	</body>
+</html>
+
