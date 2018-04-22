@@ -121,7 +121,8 @@ class Property():
             id = parsed_json['id']
 
             cursor = db.cursor()
-            sql_string = "UPDATE Property SET '" + attribute + "' = '" + value + "'WHERE id == '" + id + "';"
+            sql_string = "UPDATE Property SET " + attribute + " = '" + value + "' WHERE id = '" + id + "';"
+            print (sql_string)
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:
