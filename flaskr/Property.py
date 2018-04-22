@@ -83,7 +83,25 @@ class Property():
             except (pymysql.Error, pymysql.Warning) as e:
                 print (e)
                 return
-            return_string = str(cursor.fetchall())
+
+            properties = cursor.fetchall()
+            dict_json = []
+            for property in properties:
+                property_dict = {
+                    "propertyName": property['propertyName'],
+                    "id": property['id'],
+                    "isPublic": property['isPublic'].decode(),
+                    "size": property['size'],
+                    "isCommercial": property['isCommercial'].decode(),
+                    "streetAddress": property['streetAddress'],
+                    "city": property['city'],
+                    "zip": property['zip'],
+                    "propertyType": property['propertyType'],
+                    "ownedBy": property['ownedBy'],
+                    "approvedBy": property['approvedBy']
+                }
+                dict_json.append(property_dict)
+            return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
             return return_string
         else:
             return "not logged in"
@@ -116,7 +134,7 @@ class Property():
             order = parsed_json['order']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "SELECT propertyName, id from Property where ownedBy != '" \
+            sql_string = "SELECT * from Property where ownedBy != '" \
                     + email + "' ORDER BY " + sort_by + " " + order
 
             try:
@@ -124,7 +142,24 @@ class Property():
             except (pymysql.Error, pymysql.Warning) as e:
                 print (e)
                 return
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            properties = cursor.fetchall()
+            dict_json = []
+            for property in properties:
+                property_dict = {
+                    "propertyName": property['propertyName'],
+                    "id": property['id'],
+                    "isPublic": property['isPublic'].decode(),
+                    "size": property['size'],
+                    "isCommercial": property['isCommercial'].decode(),
+                    "streetAddress": property['streetAddress'],
+                    "city": property['city'],
+                    "zip": property['zip'],
+                    "propertyType": property['propertyType'],
+                    "ownedBy": property['ownedBy'],
+                    "approvedBy": property['approvedBy']
+                }
+                dict_json.append(property_dict)
+            return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
             return return_string
         else:
             return "not logged in"

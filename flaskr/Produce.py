@@ -115,6 +115,57 @@ class Produce():
         else:
             return "not logged in"
 
+    @staticmethod
+    def get_farm_crops():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName FROM Produce WHERE produceType = 'fruit' OR produceType = 'nut' OR produceType = 'vegetable' OR produceType = 'flower' ORDER BY produceName ASC;"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def get_garden_crops():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName FROM Produce WHERE produceType = 'vegetable' OR produceType = 'flower' ORDER BY produceName ASC;"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def get_orchard_crops():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName FROM Produce WHERE produceType = 'fruit' OR produceType = 'nut' ORDER BY produceName ASC;"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
 
 
 app.add_url_rule('/add_produce', 'add_produce', Produce.add_produce, methods=['POST'])
@@ -123,3 +174,8 @@ app.add_url_rule('/approve_produce', 'approve_produce', Produce.approve_produce,
 app.add_url_rule('/get_unapproved_produce', 'get_unapproved_produce', Produce.get_unapproved_produce, methods=['GET'])
 app.add_url_rule('/get_approved_produce', 'get_approved_produce', Produce.get_approved_produce, methods=['GET'])
 app.add_url_rule('/get_farm_animals', 'get_farm_animals', Produce.get_farm_animals, methods=['GET'])
+app.add_url_rule('/get_farm_crops', 'get_farm_crops', Produce.get_farm_crops, methods=['GET'])
+app.add_url_rule('/get_garden_crops', 'get_garden_crops', Produce.get_garden_crops, methods=['GET'])
+app.add_url_rule('/get_orchard_crops', 'get_orchard_crops', Produce.get_orchard_crops, methods=['GET'])
+
+
