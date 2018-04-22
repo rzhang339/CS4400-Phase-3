@@ -88,6 +88,24 @@ class Property():
         else:
             return "not logged in"
 
+    def get_property_by_id():
+        parsed_json = request.get_json()
+        id = parsed_json['id']
+
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        sql_string = "SELECT * from Property where id = '" + id + "'"
+
+        try:
+            cursor.execute(sql_string)
+        except (pymysql.Error, pymysql.Warning) as e:
+            print (e)
+            return
+
+        property = cursor.fetchone()
+        return_string = str(property)
+        return return_string
+
+
     @staticmethod
     def get_other_user_properties():
         if 'user' in session.keys():
@@ -163,5 +181,7 @@ app.add_url_rule('/get_user_properties', 'get_user_properties', Property.get_use
 app.add_url_rule('/get_other_user_properties', 'get_other_user_properties', Property.get_other_user_properties, methods=['POST'])
 app.add_url_rule('/update_property', 'update_property', Property.update_property, methods=['POST'])
 app.add_url_rule('/get_properties_from_attribute', 'get_properties_from_attribute', Property.get_properties_from_attribute, methods=['POST'])
+app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_property_by_id, methods=['POST'])
+
 
 
