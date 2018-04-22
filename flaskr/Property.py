@@ -75,7 +75,7 @@ class Property():
             order = parsed_json['order']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "SELECT propertyName, id from Property where ownedBy = '" \
+            sql_string = "SELECT * from Property where ownedBy = '" \
                     + email + "' ORDER BY " + sort_by + " " + order
 
             try:
@@ -83,7 +83,7 @@ class Property():
             except (pymysql.Error, pymysql.Warning) as e:
                 print (e)
                 return
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return_string = str(cursor.fetchall())
             return return_string
         else:
             return "not logged in"

@@ -34,5 +34,13 @@ def index():
 	else:
 		return "Invalid Credentials"
 
+@app.route('/register/owner')
+def register_owner():
+	return render_template('OwnerRegistration.html')
+
+@app.route('/register/visitor')
+def register_visitor():
+	return render_template('VisitorRegistration.html')
+
 if __name__ == '__main__':
 	app.run()
