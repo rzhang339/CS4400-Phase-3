@@ -8,7 +8,7 @@ db = pymysql.connect(host = 'academic-mysql.cc.gatech.edu',
 								db = 'cs4400_team_34')
 app = Flask('CS4400')
 app.config['SECRET_KEY'] = 'Zwo81Qe3Pi7aAHnsPVGkjyW2FApg9ekJVN26iWPRps4='
-CORS(app)
+#CORS(app)
 
 
 def test():
