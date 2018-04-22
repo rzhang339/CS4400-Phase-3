@@ -75,9 +75,13 @@ class Property():
             order = parsed_json['order']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "SELECT * from Property where ownedBy = '" \
-                    + email + "' ORDER BY " + sort_by + " " + order
-
+            sql_string = "SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings" \
+                    + " FROM Property LEFT JOIN " \
+                    + "(SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings " \
+                    + "FROM Visits Group By id) as temp ON Property.id = temp.id " \
+                    + "WHERE ownedBy = '" + email + "' "\
+                    + "ORDER BY " + sort_by + " " + order
+            print (sql_string)
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:
@@ -87,6 +91,7 @@ class Property():
             properties = cursor.fetchall()
             dict_json = []
             for property in properties:
+                print (property)
                 property_dict = {
                     "propertyName": property['propertyName'],
                     "id": property['id'],
@@ -97,8 +102,9 @@ class Property():
                     "city": property['city'],
                     "zip": property['zip'],
                     "propertyType": property['propertyType'],
-                    "ownedBy": property['ownedBy'],
-                    "approvedBy": property['approvedBy']
+                    "isApproved": property['isApproved'],
+                    "visits": property['visits'],
+                    "ratings": str(property['ratings'])
                 }
                 dict_json.append(property_dict)
             return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
@@ -148,9 +154,9 @@ class Property():
                 property_dict = {
                     "propertyName": property['propertyName'],
                     "id": property['id'],
-                    "isPublic": property['isPublic'].decode(),
+                    "isPublic": property['isPublic'].decode('utf-8'),
                     "size": property['size'],
-                    "isCommercial": property['isCommercial'].decode(),
+                    "isCommercial": property['isCommercial'].decode('utf-8'),
                     "streetAddress": property['streetAddress'],
                     "city": property['city'],
                     "zip": property['zip'],
