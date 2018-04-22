@@ -46,54 +46,16 @@
 				        dataType: "text",
 				        success: function(text) {
 				        	console.log("logging in");
+				        	console.log(text);
 				        	if (text == 'owner') {
 								location.href="/homescreen_owner";
 							} else if (text == 'visitor') {
-								location.href="HomescreenVisitor.html";
+								location.href="/homescreen_visitor";
 							} else if (text == 'admin') {
-								location.href="HomescreenAdmin.html";
-							}
-				        },
-				        complete: function(text) {
-				        	console.log("logging in");
-				        	console.log(text);
-				        	if (text == 'owner') {
-								location.href="localhost:5000/homescreen_owner";
-							} else if (text == 'visitor') {
-								location.href="HomescreenVisitor.html";
-							} else if (text == 'admin') {
-								location.href="HomescreenAdmin.html";
+								location.href="/homescreen_admin";
 							}
 				        }
 				    });
-/*
-				    $.ajax({
-                        type: "GET",
-                        url: "http://localhost:5000/get_session",
-                        dataType: "text",
-                        success: function(text) {
-                            console.log("yay");
-                            //localStorage.setItem( "session", text);
-                            console.log(text);
-                        },
-                        complete: function(msg) {
-                        	console.log("yay");
-                            console.log(msg)
-                            //console.log(text);
-                        }
-
-                    });
-*/
-				    
-
-					//response is the userType
-					if (response == 'owner') {
-						location.href="/homescreen_owner";
-					} else if (response == 'visitor') {
-						location.href="HomescreenVisitor.html";
-					} else if (response == 'admin') {
-						location.href="HomescreenAdmin.html";
-					}
 				}
 
 				function navToNewOwnerRegistration() {

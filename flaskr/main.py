@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from flask import request
 
 import User
@@ -27,7 +27,24 @@ def index():
 
 @app.route('/homescreen_owner')
 def homescreen_owner():
-	return render_template('HomescreenOwner.html')
+	if (session['user']['userType'] == "owner"):
+		return render_template('HomescreenOwner.html')
+	else:
+		return "Invalid credentials"
+
+@app.route('/homescreen_visitor')
+def homescreen_visitor():
+	if (session['user']['userType'] == "visitor"):
+		return render_template('HomescreenVisitor.html')
+	else:
+		return "Invalid credentials"
+
+@app.route('/homescreen_admin')
+def homescreen_admin():
+	if (session['user']['userType'] == "admin"):
+		return render_template('HomescreenAdmin.html')
+	else:
+		return "Invalid credentials"
 
 if __name__ == '__main__':
 	app.run()
