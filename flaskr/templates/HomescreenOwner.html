@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Owner Homescreen</title>
+		<center><h1>Welcome {Owner}</h1></center>
+		<style type="text/css">
+			.search {
+				float: left;
+				margin-left: 20px;
+				/*margin-right: 50px;*/
+			}
+
+			.ownerActions {
+				float: left;
+				margin-left: 100px;
+			}
+
+			.logout {
+				float: left;
+				margin-left: 100px;
+			}
+
+			.selected {
+				background-color: magenta;
+				color: #FFF;
+			}
+
+			td {
+				/*border: 1px #DDD solid;
+				padding: 5px; */
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<center><h2>Your Properties:</h2></center>
+		<br>
+		<center><table id="homescreenOwnerTable" border="1">
+			<thead>
+				<tr>
+					<th>Name <button id="asc" onclick="sortAsc()"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Address</th>
+					<th>City <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Zip</th>
+					<th>Size</th>
+					<th>Type <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Public</th>
+					<th>Commerical</th>
+					<th>ID</th>
+					<th>isValid</th>
+					<th>Visits</th>
+					<th>Avg. Rating <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>A garden</td>
+					<td>Garden's addr</td>
+					<td>ATL</td>
+					<td>111111</td>
+					<td>3</td>
+					<td>Garden</td>
+					<td>True</td>
+					<td>False</td>
+					<td>00400</td>
+					<td>True</td>
+					<td>3</td>
+					<td>4.7</td>
+				</tr>
+				<tr>
+					<td>A farm</td>
+					<td>Farm's addr</td>
+					<td>ATL</td>
+					<td>222222</td>
+					<td>20</td>
+					<td>Farm</td>
+					<td>False</td>
+					<td>True</td>
+					<td>12345</td>
+					<td>False</td>
+					<td>0</td>
+					<td>N/A</td>
+				</tr>
+
+			</tbody>
+		</table></center>
+		<br>
+
+		<div class="search">
+			<center><p><select id="searchPropertiesDropdown" placeholder="Search by...">
+				<option value="propertyName">Name</option>
+				<option value="city">City</option>
+				<option value="propertyType">Type</option>
+				<option value="visits">Visits</option>
+				<option value="avgRating">Average Rating</option>
+			</select></p>
+			<br>
+			<p><input type="text" name="searchInput" id="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button" onclick="searchProperty()">Search Properties</button></p></center>
+		</div>
+
+		<div class="ownerActions">
+			<center><p><button id="managePropertyButton" type="button" onclick="manageProperty()">Manage Property</button></p>
+			<p><button id="addPropertyButton" type="button" onclick="navToAddPropertyScreen()">Add Property</button></p>
+			<p><button id="viewOtherPropertiesButton" type="button" onclick="navToViewOtherPropertiesScreen()">View Other Properties</button></p></center>
+		</div>
+
+		<div class="logout">
+			<p><button id="logout" type="button" onclick="logout()">Logout</button></p>
+		</div>
+		<script type="text/javascript">
+            document.getElementById('logout').onclick = function() {
+                console.log("yeet")
+
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:5000/logout",
+                    dataType: "text",
+                    success: function(text) {
+                        //location.href="Login.html";
+                        console.log("yay");
+                        console.log(text);
+                    }
+
+                });
+
+            }
+        </script>    
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">		</script>
+		<script type="text/javascript">
+		
+			var table = document.getElementById('homescreenOwnerTable');
+			var selected = document.getElementsByClassName('selected');
+			table.onclick = highlight;
+			
+			function highlight(e) {
+				if (selected[0]) {
+					selected[0].className = '';
+				}
+				e.target.parentNode.className = 'selected';
+			}
+			
+
+/*
+			$(document).ready(function () {
+				//this highlights the row
+				$("#homescreenOwnerTable tr").click(function(){
+					$(this).addClass('selected').siblings().removeClass('selected');
+					//var propertyID = $(this).find('td').eq(8).html();
+					//alert(propertyID);
+				})
+				//this should retrieve the selected row'sproperty ID upon clicking the manage property button
+				$('#managePropertyButton').on('click', function(e){
+					var propertyID = $("#homescreenOwnerTable tr.selected td").eq(8).html();
+					alert(propertyID);
+					//alert($("#homescreenOwnerTable tr.selected td").eq(8).html());
+				});
+				*/
+				/*
+				$("#searchPropertiesDropdown").click(function(){
+					var selectedPropertyAttr = $('#searchPropertiesDropdown').find(":selected").text();
+					alert(selectedPropertyAttr);				
+				});
+				*/
+			//});
+
+			
+			function manageProperty() {
+				/*
+				$('#managePropertyButton').on('click', function(e){
+					var propertyID = $("#homescreenOwnerTable tr.selected td").eq(8).html();
+					alert(propertyID);
+					//alert($("#homescreenOwnerTable tr.selected td").eq(8).html());
+				});
+				*/
+				var propertyID = $("#homescreenOwnerTable tr.selected td").eq(8).html();
+				console.log(propertyID);
+				var property_info = {
+					id: propertyID,
+				};
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:5000/update_property",
+				    data: JSON.stringify(property_info),
+				    //async: false,
+				    contentType: "application/json;charset=utf-8",
+				    dataType: "text",
+				    success: function(text) {
+				        console.log("yay");
+				        console.log(text);
+				        // response = text;
+				        // console.log(response);
+				    },
+				    complete: function(msg) {
+				        console.log(msg)
+				    }
+				});
+			}
+
+			function searchProperty() {
+				var selectedType = $('select[id=searchPropertiesDropdown]').val();
+				var searchTerm = document.getElementById('searchInput').value;
+				console.log(selectedType);
+				console.log(searchTerm);
+				var search_info = {
+					attribute: selectedType,
+					value: searchTerm
+				};
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:5000/get_properties_from_attribute",
+				    data: JSON.stringify(search_info),
+				    //async: false,
+				    contentType: "application/json;charset=utf-8",
+				    dataType: "text",
+				    success: function(text) {
+				        console.log("yay");
+				        console.log(text);
+				        // response = text;
+				        // console.log(response);
+				    },
+				    complete: function(msg) {
+				        console.log(msg)
+				    }
+				});
+			}
+
+			function navToViewOtherPropertiesScreen() {
+				location.href= "OtherOwnerPropertiesScreen.html";
+			}
+
+			function navToAddPropertyScreen() {
+				location.href = "AddProperty.html";
+			}
+
+			function sortAsc() {
+				var attribute = $("#homescreenOwnerTable th.selected th").eq(0).html();
+				console.log(attribute);
+			}
+/*
+			window.onload = function() {
+				console.log("tryna fetch da session")
+				var session = localStorage.getItem("session");
+    			console.log(session);
+			};
+*/
+		</script>
+	</body>
+
+</html>
