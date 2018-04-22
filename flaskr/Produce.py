@@ -98,9 +98,28 @@ class Produce():
         else:
             return "not logged in"
 
+    @staticmethod
+    def get_farm_animals():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName FROM Produce WHERE produceType = 'animal' ORDER BY produceName ASC;"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
+
 
 app.add_url_rule('/add_produce', 'add_produce', Produce.add_produce, methods=['POST'])
 app.add_url_rule('/delete_produce', 'delete_produce', Produce.delete_produce, methods=['POST'])
 app.add_url_rule('/approve_produce', 'approve_produce', Produce.approve_produce, methods=['POST'])
 app.add_url_rule('/get_unapproved_produce', 'get_unapproved_produce', Produce.get_unapproved_produce, methods=['GET'])
 app.add_url_rule('/get_approved_produce', 'get_approved_produce', Produce.get_approved_produce, methods=['GET'])
+app.add_url_rule('/get_farm_animals', 'get_farm_animals', Produce.get_farm_animals, methods=['GET'])

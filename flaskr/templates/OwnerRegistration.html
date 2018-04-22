@@ -21,7 +21,7 @@
 		<p>City*: <input type="text" id="city"> 
 			Zip*: <input type="text" id="zip">
 			Acres*:<input type="text" id="acres"></p>
-		<p>Property Type*: <select id="propertyType">
+		<p>Property Type*: <select id="propertyType" onChange="check()">
 		  	<option value="farm">Farm</option>
 		 	<option value="garden">Garden</option>
 		  	<option value="orchard">Orchard</option>
@@ -57,35 +57,39 @@
 		<button id="cancel" type="button">Cancel</button></p>
 		<script type="text/javascript">
 			document.getElementById('cancel').onclick = function() {
-				location.href = "/";
-			};
-			document.getElementById('propertyType').onchange = function() {
-			    var value = document.getElementById("propertyType").value;
-			    
-			    
-			    if (value == "garden" || value = "orchard") {
-			        document.getElementById("animalType").style.display = "none";
-			        document.getElementById("animalLabel").innerHTML = "";
-			    } else {
-			    	document.getElementById("animalLabel").innerHTML = "Animals:*:";
-			    	document.getElementById("animalType").style.display = "block";
-			    }
-			  
+				location.href = "/"
 			};
 		</script>
 		</form></center>
 		<p id="demo"></p>
-		<!-- <script>
-			document.getElementById('propertyType').onchange = function() {
+		<script>
+			function check() {
 			    var value = document.getElementById("propertyType").value;
 			    
 			    
-			    if (value == "garden" || value = "orchard") {
+			    if (value == "garden" || value == "orchard") {
 			        document.getElementById("animalType").style.display = "none";
 			        document.getElementById("animalLabel").innerHTML = "";
 			    } else {
-			    	document.getElementById("animalLabel").innerHTML = "Animals:*:";
+			    	document.getElementById("animalLabel").innerHTML = "Animals:*:"
 			    	document.getElementById("animalType").style.display = "block";
+			    }
+
+			    if (value == "garden") {
+			    	document.getElementById("cropType").options[1].style.display = "none";
+			    	document.getElementById("cropType").options[2].style.display = "block";
+			    	document.getElementById("cropType").options[3].style.display = "none";
+			    	document.getElementById("cropType").options[4].style.display = "block";
+			    } else if (value == "orchard") {
+			    	document.getElementById("cropType").options[1].style.display = "block";
+			    	document.getElementById("cropType").options[2].style.display = "none";
+			    	document.getElementById("cropType").options[3].style.display = "block";
+			    	document.getElementById("cropType").options[4].style.display = "none";
+			    } else {
+			    	document.getElementById("cropType").options[1].style.display = "block";
+			    	document.getElementById("cropType").options[2].style.display = "block";
+			    	document.getElementById("cropType").options[3].style.display = "block";
+			    	document.getElementById("cropType").options[4].style.display = "block";
 			    }
 			  
 			}
@@ -102,11 +106,37 @@
 					  return false;
 					}
 				}
-				if (docuemnt.getElementById(id).value == "") {
-					alert("Fill it out");
+				// if (document.getElementById(id).value == "") {
+				// 	alert("Fill it out");
+				// }
+
+				var email = document.getElementById('emailInput').value;
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('passwordInput').value;
+				var confirmPassword = document.getElementById('confirmPasswordInput').value;
+				if (password != confirmPassword) {
+					alert("Passwords do not match");
+				} else {
+					var info = {
+						email: email,
+						password: password,
+						username: username,
+						type: "owner"
+					};
+					$.ajax({
+							type: "POST",
+							url: "http://localhost:5000/register",
+					        data: JSON.stringify(info),
+					        contentType: "application/json;charset=utf-8",
+					        dataType: "text",
+					        success: function(text) {
+					        	location.href = "/";
+					        }
+					    });
+					console.log("register");
 				}
 			}
-		</script> -->
+		</script>
 	</body>
 </html>
 
