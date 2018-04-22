@@ -53,7 +53,7 @@ class User():
                 return "Already Logged In"
             user['email'] = email
             session['user'] = user
-            return "Log In"
+            return user['userType']
         else:
             return "Invalid Login"
 
