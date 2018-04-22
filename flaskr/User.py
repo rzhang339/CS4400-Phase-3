@@ -31,9 +31,9 @@ class User():
 
     @staticmethod
     def login():
-        json = request.get_json()
-        email = json['email']
-        password = User.hash_password(json['password'])
+        parsed_json = request.get_json()
+        email = parsed_json['email']
+        password = User.hash_password(parsed_json['password'])
 
         cursor = db.cursor(pymysql.cursors.DictCursor)
         sql_string = "SELECT username, password, userType FROM User WHERE email = '" \
