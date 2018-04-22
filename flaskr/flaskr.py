@@ -1,5 +1,6 @@
 import pymysql
 from flask import Flask
+from flask_cors import CORS, cross_origin
 
 db = pymysql.connect(host = 'academic-mysql.cc.gatech.edu',
 								user = 'cs4400_team_34',
@@ -7,6 +8,9 @@ db = pymysql.connect(host = 'academic-mysql.cc.gatech.edu',
 								db = 'cs4400_team_34')
 app = Flask('CS4400')
 app.config['SECRET_KEY'] = 'Zwo81Qe3Pi7aAHnsPVGkjyW2FApg9ekJVN26iWPRps4='
+app.config['SESSION_COOKIE_NAME'] = 'cs4400-session'
+#CORS(app)
+
 
 def test():
 	return "test"
