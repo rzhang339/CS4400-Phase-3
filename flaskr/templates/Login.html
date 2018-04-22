@@ -45,16 +45,25 @@
 				        contentType: "application/json;charset=utf-8",
 				        dataType: "text",
 				        success: function(text) {
-				        	if (response == 'owner') {
+				        	console.log("logging in");
+				        	if (text == 'owner') {
 								location.href="/homescreen_owner";
-							} else if (response == 'visitor') {
+							} else if (text == 'visitor') {
 								location.href="HomescreenVisitor.html";
-							} else if (response == 'admin') {
+							} else if (text == 'admin') {
 								location.href="HomescreenAdmin.html";
 							}
 				        },
-				        complete: function(msg) {
-				        	console.log(msg)
+				        complete: function(text) {
+				        	console.log("logging in");
+				        	console.log(text);
+				        	if (text == 'owner') {
+								location.href="localhost:5000/homescreen_owner";
+							} else if (text == 'visitor') {
+								location.href="HomescreenVisitor.html";
+							} else if (text == 'admin') {
+								location.href="HomescreenAdmin.html";
+							}
 				        }
 				    });
 /*
