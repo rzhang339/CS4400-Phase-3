@@ -92,6 +92,17 @@
 			.close:hover {
 				cursor: pointer;
 			}
+
+			.selected {
+				background-color: magenta;
+				color: #FFF;
+			}
+
+			td {
+				/*border: 1px #DDD solid;
+				padding: 5px; */
+				cursor: pointer;
+			}
 		</style>
 	</head>
 
@@ -115,6 +126,37 @@
 					<th>Avg. Rating</th>
 				</tr>
 			</thead>
+			<tbody>
+				<tr>
+					<td>A garden</td>
+					<td>Garden's addr</td>
+					<td>Kels City</td>
+					<td>111111</td>
+					<td>3</td>
+					<td>Garden</td>
+					<td>True</td>
+					<td>False</td>
+					<td>00400</td>
+					<td>True</td>
+					<td>3</td>
+					<td>4.7</td>
+				</tr>
+				<tr>
+					<td>A farm</td>
+					<td>Farm's addr</td>
+					<td>ZZZ</td>
+					<td>222222</td>
+					<td>20</td>
+					<td>Orchard</td>
+					<td>False</td>
+					<td>True</td>
+					<td>12345</td>
+					<td>False</td>
+					<td>0</td>
+					<td>5</td>
+				</tr>
+
+			</tbody>
 		</table></center>
 		<br>
 		<div class="search">
@@ -129,7 +171,7 @@
 			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
 		</div>
 		<div class="ownerActions">
-			<center><p><button id="viewPropertyDetailsButton" onclick="viewPropertyDetails()" type="button">View Property Details</button></p>
+			<center><p><button id="viewPropertyDetailsButton" type="button">View Property Details</button></p>
 			<p><button id="backButton" type="button" onclick="goBack()">Back</button></p></center>
 			<script type="text/javascript">
 				function goBack() {
@@ -138,29 +180,34 @@
 				
 			</script>
 		</div>
-		<div id="propertyDetails" class="popup">
-			<div class="popup-content">
-				<span class="close">&times;</span>
-    				<p>Property details will go here</p>
-			</div>
+		<div id="wrapper">
+			<p>lalalalalala</p>
 		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 		<script type="text/javascript">
-			var popup = document.getElementById('propertyDetails');
-			var popupButton = document.getElementById('viewPropertyDetailsButton');
-			var span = document.getElementsByClassName("close")[0];
-			//when click button, open popup
-			popupButton.onclick = function() {
-				popup.style.display = "block";
+			var table = document.getElementById('otherUserPropertyTable');
+			var selected = document.getElementsByClassName('selected');
+			table.onclick = highlight;
+			
+			function highlight(e) {
+				if (selected[0] && ('tr')) {
+					selected[0].className = '';
+				}
+				e.target.parentNode.className = 'selected';
 			}
-			// When the user clicks on <span> (x), close the modal
-			span.onclick = function() {
-			    popup.style.display = "none";
-			}
-		</script>
-		<script>
-			function viewPropertyDetails() {
-				alert("Name: ");
-			}
+
+			$('#wrapper').dialog({
+    			autoOpen: false,
+    			title: 'Property Details'
+			});
+			$('#viewPropertyDetailsButton').click(function() {
+    			$('#wrapper').dialog('open');
+    			return false;
+			});
 		</script>
 	</body>
 
