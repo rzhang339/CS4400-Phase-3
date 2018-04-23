@@ -42,12 +42,12 @@ VALUES ('" + id + "', '" + produceName + "')
 ORDER BY produceName ASC;"
 
 • Your properties table, need to add functionality to change ratings to "n/a" when ratings = null
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS yourProperties
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) as ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
 WHERE ownedBy = '" + logged_in_user + "'
-ORDER BY name ASC;"
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
@@ -66,12 +66,12 @@ FROM FarmGrows NATURAL JOIN Produce
 WHERE id = '" + selectedPropertyID + "';"
 
 • View other owner’s properties
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings into otherProperties
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
 WHERE approvedBy IS NOT NULL AND ownedBy != '" + logged_in_user + "'
-ORDER BY name ASC;"
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
@@ -158,12 +158,12 @@ FROM USERS
 WHERE userType = 'owner';"
 
 • View all confirmed properties
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS confirmedProperties
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) as ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
 WHERE approvedBy IS NOT NULL
-ORDER BY name ASC;"
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
