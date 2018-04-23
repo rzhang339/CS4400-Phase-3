@@ -22,7 +22,7 @@ class Property():
             propertyType = parsed_json['propertyType']
             ownedBy = username
 
-            print (isPublic);
+            print ("helloooo");
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
             sql_string = "SELECT MAX(id) FROM Property"
@@ -130,10 +130,25 @@ class Property():
             return
 
         property = cursor.fetchone()
-        return_string = str(property)
+        print(property)
+        dict_json = []
+        property_dict = {
+                    "propertyName": property['propertyName'],
+                    "id": property['id'],
+                    "isPublic": property['isPublic'].decode(),
+                    "size": property['size'],
+                    "isCommercial": property['isCommercial'].decode(),
+                    "streetAddress": property['streetAddress'],
+                    "city": property['city'],
+                    "zip": property['zip'],
+                    "propertyType": property['propertyType'],
+                    "isApproved": property['approvedBy']
+        }
+        dict_json.append(property_dict)
+        return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
         return return_string
 
-
+    
     @staticmethod
     def get_other_user_properties():
         if 'user' in session.keys():

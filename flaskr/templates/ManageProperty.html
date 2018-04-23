@@ -5,15 +5,19 @@
 	<script type="text/javascript">
 
 	$(document).ready(function() {
-		var dic = {
+		/*var dic = {
 			'sort_by':"propertyName",
 			'order':'asc'
+		} */
+		console.log()
+		var dic = {
+			'id':sessionStorage.getItem('id')
 		}
 
       $.ajax({    //create an ajax request to display.php
 
         type: "POST",
-        url: "http://localhost:5000/get_user_properties",  
+        url: "http://localhost:5000/get_property_by_id",  
         data: JSON.stringify(dic),
         contentType: "application/json;charset=utf-8",       
         dataType: "text",   //expect html to be returned                
@@ -23,23 +27,15 @@
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
-            
+            console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
             
-            $.each(j, function(i, item) {
-            	var isPublic = "False";
-            	var isCommercial = "False";
-            	if (item.isPublic == "\u0001") {
-            		isPublic = "True";
-            	}
-            	if (item.isCommercial == "\u0001") {
-            		isCommercial = "True";
-            	}
-            	
-    			$('<tr>').html(
-        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#homescreenOwnerTable');
-			});
+            j = j[0];
+
+        	document.getElementById('title').innerHTML = "Manage " + j['propertyName'];
+        	document.getElementById('gardenName').value = j['propertyName'];
+    		docuemnt.getElementById('')
 			
        		
         	}
@@ -53,13 +49,13 @@
 
 	<head>
 		<title>Manage Property</title>
-		<center><h1>Manage ______</h1></center>
+		<center><h1 id="title"></h1></center>
 	</head>
 
 
 	<body>
 		<center><form>
-		<p>Name: <input type="text" name="gardenName"><label id="type">Type:</label></p>
+		<p>Name: <input type="text" name="gardenName" id="gardenName"><label id="type">Type:</label></p>
 		<p>Address<input type="text" name="gardenAddress">
 			Public:<select>
 			<option value="publicTrue">True</option>

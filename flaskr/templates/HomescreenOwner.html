@@ -196,6 +196,7 @@
 				var property_info = {
 					id: propertyID,
 				};
+				sessionStorage.setItem('id', propertyID);
 				$.ajax({
 					type: "POST",
 					url: "http://localhost:5000/update_property",
