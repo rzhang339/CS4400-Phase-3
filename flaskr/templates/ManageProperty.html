@@ -101,7 +101,7 @@
 
 		<p><button id="submitRequest" type="button">Submit Request</button></p>
 		<p><button id="saveChanges" type="button">Save Changes</button></p>
-		<p><button id="deletePropertyButton" type="button">Delete Property</button>
+		<p><button id="deletePropertyButton" type="button" onclick="deleteProperty()">Delete Property</button>
 		<button id="backButtton" type="button" onclick="goBack()">Back (Don't Save)</button></p>
 		</form></center>
 		<script>
@@ -122,7 +122,32 @@
 			function goBack() {
 				location.href = '/';
 			}
+
 		
 		</script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
+		<script type="text/javascript">
+			function deleteProperty() {
+				var dic = {'id':sessionStorage.getItem('id')};
+				$.ajax({    //create an ajax request to display.php
+
+		        type: "POST",
+		        url: "http://localhost:5000/delete_property",  
+		        data: JSON.stringify(dic),
+		        contentType: "application/json;charset=utf-8",       
+		        dataType: "text",   //expect html to be returned                
+		        success: function(response){                    
+		            $("#responsecontainer").html(response); 
+		            location.href = '/';
+		        },
+		        complete: function(response){                    
+		            $("#responsecontainer").html(response); 
+		            
+		        
+		            location.href = '/';
+		        }
+			    });
+				}
+	</script>
 	</body>
 </html>

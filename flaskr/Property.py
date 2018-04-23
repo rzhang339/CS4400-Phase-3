@@ -54,7 +54,7 @@ class Property():
     def delete_property():
         if 'user' in session.keys():
             json = request.get_json()
-            id = parsed_json['id']
+            id = json['id']
 
             cursor = db.cursor()
             sql_string = "DELETE from Property WHERE id = '" + id + "'"
@@ -148,7 +148,7 @@ class Property():
         return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
         return return_string
 
-    
+
     @staticmethod
     def get_other_user_properties():
         if 'user' in session.keys():
