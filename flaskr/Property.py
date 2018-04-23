@@ -197,7 +197,6 @@ class Property():
     @staticmethod
     def update_property():
         if 'user' in session.keys():
-            user = session['user']
             parsed_json = request.get_json()
             attribute = parsed_json['attribute']
             value = parsed_json['value']
@@ -205,6 +204,31 @@ class Property():
 
             cursor = db.cursor()
             sql_string = "UPDATE Property SET " + attribute + " = '" + value + "' WHERE id = '" + id + "';"
+            print (sql_string)
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return "Update successful"
+        else:
+            return "not logged in"
+
+    def update_multiple_attributes():
+        if 'user' in session.keys():
+            parsed_json = request.get_json()
+            cursor = db.cursor()
+            sql_string = "UPDATE Property SET "
+            first = True
+            for k, v in parsed_json:
+                if k != 'id':
+                    if !first:
+                        sql_string != ", "
+                    else:
+                        first = False
+                    sql_string += k + " = '" + v + "'"
+            sql_string += "' WHERE id = '" + parsed_json['id'] + "';"
             print (sql_string)
             try:
                 cursor.execute(sql_string)
@@ -227,6 +251,36 @@ class Property():
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
             sql_string = "SELECT * from Property WHERE " + attribute + " = '" + value + "' ORDER BY " + sort_by + " " + order
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            list = cursor.fetchall()
+            print(list)
+            for dict in list:
+                dict['isPublic'] = str(dict['isPublic'])
+                dict['isCommercial'] = str(dict["isCommercial"])
+            return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
+    @staticmethod
+    def get_user_properties_from_attribute():
+        if 'user' in session.keys():
+            user = parsed_json['user']
+            owned_by = user['username']
+            parsed_json = request.get_json()
+            attribute = parsed_json['attribute']
+            value = parsed_json['value']
+            sort_by = parsed_json['sort_by']
+            order = parsed_json['order']
+
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT * from Property WHERE " + attribute + " = '" + value + "', ownedBy = '" + owned_by + "' ORDER BY " + sort_by + " " + order
 
             try:
                 cursor.execute(sql_string)
@@ -340,3 +394,4 @@ app.add_url_rule('/get_properties_from_attribute', 'get_properties_from_attribut
 app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_property_by_id, methods=['POST'])
 app.add_url_rule('/get_detailed_property', 'get_detailed_property', Property.get_detailed_property, methods=['POST'])
 app.add_url_rule('/get_unconfirmed_properties', 'get_unconfirmed_properties', Property.get_unconfirmed_properties, methods=['GET'])
+app.add_url_rule('/update_multiple_attributes', 'update_multiple_attributes', Property.update_multiple_attributes, methods=['POST'])
