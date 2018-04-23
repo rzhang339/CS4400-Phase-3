@@ -148,14 +148,14 @@ WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 ## raymond got this :)
 
 • View list of all visitors
-"SELECT *
-FROM USERS
-WHERE userType = 'visitor';"
+"select User.username, email, count(*) as visitCount
+from User left join Visits on User.username = Visits.username
+where userType = 'visitor' Group by Visits.username;"
 
 • View a list of all owners
-"SELECT *
-FROM USERS
-WHERE userType = 'owner';"
+"select User.username, email, count(*) as numProperty
+from User join Property on User.username = Property.ownedBy
+where userType = 'owner' Group by Property.ownedBy;"
 
 • View all confirmed properties
 "SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
