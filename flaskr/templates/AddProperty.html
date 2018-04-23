@@ -25,7 +25,7 @@
 		  	<option value="Cow">Cow</option>
 		 	<option value="Horse">Horse</option>
 		  	<option value="Pig">Pig</option>
-		  	<option value="" ="Sheep">Sheep</option>
+		  	<option value="Sheep">Sheep</option>
 		  	<option value="Goat">Goat</option>
 		  	<option value="Chicken">Chicken</option>
 		</select>
@@ -72,37 +72,47 @@
 				location.href='/';
 			}
 		</script>
-				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
 
-				<script type="text/javascript">
+		<script type="text/javascript">
 			function add() {
 			
-				
-			
+				var public = '0';
+				if (document.getElementById('isPublic').value == 'yes') {
+					public = '1';
+				}
+				var commercial = '0';
+				if (document.getElementById('isCommercial').value == 'yes') {
+					commercial = '1';
+				}
+				console.log('adding');
 				var dic = {
 					'propertyName': document.getElementById('propertyName').value,
-					'isPublic': document.getElementById('isPublic').value,
+					'isPublic': public,
 					'size': document.getElementById('acres').value,
-					'isCommercial': document.getElementById('isCommercial').value,
+					'isCommercial': commercial,
 					'streetAddress': document.getElementById('streetAddress').value,
 					'city': document.getElementById('city').value,
 					'zip': document.getElementById('zip').value,
 					'propertyType': document.getElementById('propertyType').value,
-					'ownedBy': "Bob"
 				};
+				console.log(dic);
 
-		      $.ajax({    //create an ajax request to display.php
-		      	
-		        type: "POST",
-		        url: "http://localhost:5000/add_property",  
-		        data: JSON.stringify(dic),
-		        contentType: "application/json;charset=utf-8",       
-		        dataType: "text",   //expect html to be returned                
+			    $.ajax({    //create an ajax request to display.php
+			      	
+			        type: "POST",
+			        url: "http://localhost:5000/add_property",  
+			        data: JSON.stringify(dic),
+			        contentType: "application/json;charset=utf-8",       
+			        dataType: "text",
+			        success: function() {
+			        	console.log("add property")
+			        }               
 		        
 	    
 
 		    });
-			location.href= '/';
+			//location.href= '/';
 		}
 </script>
 	</body>

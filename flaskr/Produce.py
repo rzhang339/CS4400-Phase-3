@@ -166,6 +166,16 @@ class Produce():
         else:
             return "not logged in"
 
+    @staticmethod
+    def get_new_crop_drop_down():
+        if 'user' in session.keys():
+            parsed_json = json.get_request()
+            id = parsed_json['id']
+            produce_type = parsed_json['produce_type']
+            
+            cursor = db.cursor()
+            sql_string = "SELECT produceName FROM FarmGrows NATURAL JOIN Produce WHERE id = '" + currentPropertyID + "' AND produceType = '" + typeDependingOnPropertyType + "';"
+
 
 
 app.add_url_rule('/add_produce', 'add_produce', Produce.add_produce, methods=['POST'])

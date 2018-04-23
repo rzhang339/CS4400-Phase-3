@@ -9,6 +9,8 @@ class Property():
     @staticmethod
     def add_property():
         if 'user' in session.keys():
+            user = session['user']
+            username = user['username']
             parsed_json = request.get_json()
             propertyName = parsed_json['propertyName']
             isPublic = parsed_json['isPublic']
@@ -18,7 +20,9 @@ class Property():
             city = parsed_json['city']
             zip = parsed_json['zip']
             propertyType = parsed_json['propertyType']
-            ownedBy = parsed_json['ownedBy']
+            ownedBy = username
+
+            print (isPublic);
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
             sql_string = "SELECT MAX(id) FROM Property"
@@ -31,10 +35,10 @@ class Property():
                 id  = str(int(max_id['MAX(id)']) + 1)
 
             sql_string = "INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy) VALUES ('" \
-                    + propertyName + "', '" + id + "', '" + isPublic + "', '" \
-                    + size + "', '" + isCommercial + "', '" + streetAddress + "', '" \
+                    + propertyName + "', '" + id + "', " + isPublic + ", '" \
+                    + size + "', " + isCommercial + ", '" + streetAddress + "', '" \
                     + city + "', '" + zip + "', '" + propertyType + "', '" + ownedBy + "');"
-            console.log(sql_string);
+            #console.log(sql_string);
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:
@@ -216,6 +220,7 @@ class Property():
                 return
 
             list = cursor.fetchall()
+            print(list)
             for dict in list:
                 dict['isPublic'] = str(dict['isPublic'])
                 dict['isCommercial'] = str(dict["isCommercial"])
@@ -283,6 +288,33 @@ class Property():
         else:
             return "not logged in"
 
+    @staticmethod
+    def get_unconfirmed_properties():
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT * " \
+                    + "FROM Property JOIN User ON Property.ownedBy = User.email " \
+                    + "WHERE approvedBy IS NULL " \
+                    + "ORDER BY propertyName ASC;"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            list = cursor.fetchall()
+            print (list)
+            for dict in list:
+                print (dict)
+                dict['isPublic'] = str(dict['isPublic'])
+                dict['isCommercial'] = str(dict['isCommercial'])
+
+            return json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
+        else:
+            return "not logged in"
+
+
 
 app.add_url_rule('/add_property', 'add_property', Property.add_property, methods=['POST'])
 app.add_url_rule('/delete_property', 'delete_property', Property.delete_property, methods=['POST'])
@@ -292,6 +324,8 @@ app.add_url_rule('/update_property', 'update_property', Property.update_property
 app.add_url_rule('/get_properties_from_attribute', 'get_properties_from_attribute', Property.get_properties_from_attribute, methods=['POST'])
 app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_property_by_id, methods=['POST'])
 app.add_url_rule('/get_detailed_property', 'get_detailed_property', Property.get_detailed_property, methods=['POST'])
+app.add_url_rule('/get_unconfirmed_properties', 'get_unconfirmed_properties', Property.get_unconfirmed_properties, methods=['GET'])
+
 
 
 

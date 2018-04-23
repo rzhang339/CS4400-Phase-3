@@ -1,0 +1,539 @@
+{
+	"info": {
+		"_postman_id": "ac7cad1b-e235-4fb0-a54c-ea73e8ae3b7b",
+		"name": "CS4400",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"description": "",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"pettybitchbryan@gatech.edu\",\n\t\"username\": \"bryan\",\n\t\"type\": \"visitor\",\n\t\"password\": \"hello\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/register",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5000/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"rzhang339@gatech.edu\",\n\t\"password\": \"hello\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"pettybitchbryan@gatech.edu\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/remove_user",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"remove_user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Property",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"propertyName\": \"Superfarm5\",\n\t\"isPublic\": \"1\",\n\t\"size\": \"255\",\n\t\"isCommercial\": \"1\",\n\t\"streetAddress\": \"750 Ferst Dr.\",\n\t\"city\": \"Atlanta\",\n\t\"zip\": \"30032\",\n\t\"propertyType\": \"farm\",\n\t\"ownedBy\": \"bleh\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/add_property",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"add_property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"0\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/delete_property",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"delete_property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Properties",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sort_by\" : \"propertyName\",\n\t\"order\" : \"asc\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/get_user_properties",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_user_properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Other User Properties",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sort_by\" : \"propertyName\",\n\t\"order\" : \"asc\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/get_other_user_properties",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_other_user_properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"attribute\": \"approvedBy\",\n\t\"value\": \"jonathanhe@gatech.edu\",\n\t\"id\": \"0\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/update_property",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"update_property"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Property By ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/get_property_by_id",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_property_by_id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produce",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Produce",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"cow\",\n\t\"type\": \"animal\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/add_produce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"add_produce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Produce",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"apple\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/approve_produce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"approve_produce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Produce",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"cockroach\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/delete_produce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"delete_produce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unapproved Produce",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5000/get_unapproved_produce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_unapproved_produce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Approved Produce",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5000/get_approved_produce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_approved_produce"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visits",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Visit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"rating\": \"5\",\n\t\"id\": \"0\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/add_visit",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"add_visit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Visits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:5000/get_user_visits",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"get_user_visits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Visit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"0\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/remove_visit",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"remove_visit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FarmGrows",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Relation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"0\",\n\t\"produceName\": \"apple\"\n}"
+						},
+						"url": {
+							"raw": "localhost:5000/add_relation",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"add_relation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:5000/test",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"test"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
