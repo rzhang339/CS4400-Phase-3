@@ -69,11 +69,11 @@ class Visits():
         if 'user' in session.keys():
             user = session['user']
             parsed_json = request.get_json()
-            email = user['email']
+            username = user['username']
             id = parsed_json['id']
 
             cursor = db.cursor()
-            sql_string = "DELETE FROM Visits WHERE id = '" + id + "' AND email = '" + email + "';"
+            sql_string = "DELETE FROM Visits WHERE id = '" + id + "' AND username = '" + username + "';"
             print (sql_string)
             try:
                 cursor.execute(sql_string)
@@ -85,15 +85,35 @@ class Visits():
         else:
             return "not logged in"
 
-    # this isn't right i tried to implement it to fill the visitors in system table
+        @staticmethod
+        def remove_all_visits():
+            if 'user' in session.keys():
+                #user = session['user']
+                parsed_json = request.get_json()
+                username = parsed_json['username']
+                print (username)
+                #id = parsed_json['id']
+
+                cursor = db.cursor()
+                sql_string = "DELETE FROM Visits WHERE username = '" + username + "';"
+                print (sql_string)
+                try:
+                    cursor.execute(sql_string)
+                except (pymysql.Error, pymysql.Warning) as e:
+                    print (e)
+                    return
+
+                return "deleted"
+            else:
+                return "not logged in"
+
     @staticmethod
     def get_visitors():
         if 'user' in session.keys():
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "select User.username, email, count(*) as visitCount "\
+            sql_string = "select User.username, email, count(id) as visitCount "\
             + "from User left join Visits on User.username = Visits.username "\
             + "where userType = 'visitor' Group by Visits.username;"
-
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:

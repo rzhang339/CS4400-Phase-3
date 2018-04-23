@@ -52,6 +52,11 @@
 				float: left;
 				margin-left: 100px;
 			}
+
+            .selected {
+				background-color: magenta;
+				color: #FFF;
+			}
 		</style>
 	</head>
 
@@ -61,7 +66,8 @@
 		<center><table id="viewVisitorsListTable" border="1">
 			<thead>
 				<tr>
-					<th>Username <button id="usernameAsc"> &#9650</button> <button id="usernameDsc"> &#9660</button></th>
+                    <th>Username <button id="usernameAsc"> &#9650</button>
+                    <button id="usernameDsc"> &#9660</button></th>
 					<th>Email <button id="emailAsc"> &#9650</button> <button id="emailDsc"> &#9660</button></th>
 					<th>Logged Visits <button id="visitAsc"> &#9650</button> <button id="visitDsc"> &#9660</button></th>
 				</tr>
@@ -70,11 +76,21 @@
 		<br>
 		<div class="adminActions">
 			<center><p><button id="deleteVisitorAccountButton" type="button">Delete Visitor Account</button></p>
+
 			<p><button id="deleteLogHistoryButton" type="button">Delete Log History</button></p>
+            <script type="text/javascript">
+                document.getElementById('deleteLogHistoryButton').onclick = function() {
+                    var selUsername = $("#viewVisitorsListTable tr.selected td").eq(0).html();
+    				console.log(selUsername);
+    				var user_info = {
+    					username: selUsername,
+                    }
+                };
+            </script>
 			<p><button id="back" type="button">Back</button></p></center>
 			<script type="text/javascript">
 				document.getElementById('back').onclick = function() {
-					location.href="HomescreenAdmin.html";
+					location.href="/HomescreenAdmin";
 				};
 			</script>
 		</div>
@@ -193,7 +209,16 @@
 				}
 			}
 
-            
+            var table = document.getElementById('viewVisitorsListTable');
+			var selected = document.getElementsByClassName('selected');
+			table.onclick = highlight;
+
+			function highlight(e) {
+				if (selected[0]) {
+					selected[0].className = '';
+				}
+				e.target.parentNode.className = 'selected';
+			}
 
 		</script>
 	</body>

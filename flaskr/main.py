@@ -82,5 +82,9 @@ def navToApprovedAnimalsCropsScreen():
 def navToPendingAnimalsCropsScreen():
     return render_template('PendingAnimalsCropsScreen.html')
 
+@app.route('/HomescreenAdmin')
+def navToHomescreenAdmin():
+    return render_template('HomescreenAdmin.html')
+
 if __name__ == '__main__':
 	app.run()
