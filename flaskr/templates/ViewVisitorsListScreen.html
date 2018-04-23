@@ -76,7 +76,31 @@
 		<br>
 		<div class="adminActions">
 			<center><p><button id="deleteVisitorAccountButton" type="button">Delete Visitor Account</button></p>
-
+                <script type="text/javascript">
+                    document.getElementById('deleteVisitorAccountButton').onclick = function() {
+                        var selUsername = $("#viewVisitorsListTable tr.selected td").eq(0).html();
+                        console.log(selUsername);
+                        var user_info = {
+                            username: selUsername,
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:5000/remove_visitor",
+                            data: JSON.stringify(user_info),
+                            //async: false,
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "text",
+                            success: function(text) {
+                                console.log("yay");
+                                console.log(text);
+                                location.href="/ViewVisitorsListScreen"
+                            },
+                            complete: function(msg) {
+                                console.log(msg)
+                            }
+                        });
+                    };
+                </script>
 			<p><button id="deleteLogHistoryButton" type="button">Delete Log History</button></p>
             <script type="text/javascript">
                 document.getElementById('deleteLogHistoryButton').onclick = function() {
@@ -85,6 +109,22 @@
     				var user_info = {
     					username: selUsername,
                     }
+                    $.ajax({
+    					type: "POST",
+    					url: "http://localhost:5000/remove_all_visits",
+    				    data: JSON.stringify(user_info),
+    				    //async: false,
+    				    contentType: "application/json;charset=utf-8",
+    				    dataType: "text",
+    				    success: function(text) {
+    				        console.log("yay");
+    				        console.log(text);
+                            location.href="/ViewVisitorsListScreen"
+    				    },
+    				    complete: function(msg) {
+    				        console.log(msg)
+    				    }
+    				});
                 };
             </script>
 			<p><button id="back" type="button">Back</button></p></center>

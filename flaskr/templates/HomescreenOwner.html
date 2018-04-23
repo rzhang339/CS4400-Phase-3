@@ -220,14 +220,23 @@
 				location.href='/ManageProperty';
 			}
 
-			function searchProperty() {
+function searchProperty() {
 				var selectedType = $('select[id=searchPropertiesDropdown]').val();
 				var searchTerm = document.getElementById('searchInput').value;
 				console.log(selectedType);
 				console.log(searchTerm);
+				var items = [];
+				$('#homescreenOwnerTable tbody tr td:nth-child(9)').each( function(){
+	   				//add item to array
+	   				console.log("HOLLA ATCHA");
+	   				items.push( $(this).text() );       
+				});
+			console.log(items);
 				var search_info = {
 					attribute: selectedType,
-					value: searchTerm
+					value: searchTerm,
+					sort_by: selectedType,
+					order: "asc"
 				};
 				$.ajax({
 					type: "POST",
@@ -242,10 +251,58 @@
 				        // response = text;
 				        // console.log(response);
 				    },
-				    complete: function(msg) {
-				        console.log(msg)
+				    complete: function(response) {
+				        $("#resp onsecontainer").html(response);
+			            console.log(response.responseText)
+			           	var j = JSON.parse(response.responseText);
+			            var trHTML = '';
+
+			            $.each(j, function(i, item) {
+			            	var isPublic = "False";
+			            	var isCommercial = "False";
+			            	if (item.isPublic == "\u0001") {
+			            		isPublic = "True";
+			            	}
+			            	if (item.isCommercial == "\u0001") {
+			            		isCommercial = "True";
+			            	}
+			            	if (jQuery.inArray(String(item.id), items) !== -1) {
+								$('<tr>').html(
+			        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#homescreenOwnerTable');
+
+							}
+
+			      //       	$('#homescreenOwnerTable tr').each(function(){
+						   //      if($(this).find('td').eq(8).text() == item.id){
+									// console.log(item.propertyName)
+						   //      }
+						   //  });
+
+							//console.log(j) 
+
+			    			// $('<tr>').html(
+			       //  		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#homescreenOwnerTable');
+
+			       //  		console.log(homescreenOwnerTable)
+
+			      //   		$('#homescreenOwnerTable tr').each(function(){
+						   //      if($(this).find('td').eq(8).text() != item.id){
+									// $(this).remove();
+						   //      }
+						   //  }); 
+						});
 				    }
 				});
+				// if(items.length == 1) {
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// } else if (items.length == 2) {
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// } else if (items.length == 3) {
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// 	document.getElementById("homescreenOwnerTable").deleteRow(1);
+				// }
 			}
 
 			function navToViewOtherPropertiesScreen() {

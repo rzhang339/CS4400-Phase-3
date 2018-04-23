@@ -132,15 +132,15 @@
 		</table></center>
 		<br>
 		<div class="search">
-			<center><p><select>
-				<option selected>Search by...</option>
+			<center><p><select id="searchPropertiesDropdown" placeholder="Search by...">
 				<option value="propertyName">Name</option>
 				<option value="city">City</option>
 				<option value="propertyType">Type</option>
 				<option value="visits">Visits</option>
+				<option value="avgRating">Average Rating</option>
 			</select></p>
-			<p><input type="text" name="searchInput" placeholder="Search Term"></p>
-			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
+			<p><input type="text" id="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button" onclick="searchProperty()">Search Properties</button></p></center>
 		</div>
 		<div class="ownerActions">
 			<center><p><button id="viewPropertyDetailsButton" onclick="propertyDetails()" type="button">View Property Details</button></p>
@@ -234,6 +234,63 @@
 	    		$('#wrapper').dialog('open');
 	    		return false;
 				
+			}
+			function searchProperty() {
+				var selectedType = $('select[id=searchPropertiesDropdown]').val();
+				var searchTerm = document.getElementById('searchInput').value;
+				console.log(selectedType);
+				console.log(searchTerm);
+				var items = [];
+				$('#otherUserPropertyTable tbody tr td:nth-child(9)').each( function(){
+	   				//add item to array
+	   				console.log("HOLLA ATCHA");
+	   				items.push( $(this).text() );       
+				});
+				console.log(items);
+				var search_info = {
+					attribute: selectedType,
+					value: searchTerm,
+					sort_by: selectedType,
+					order: "asc"
+				};
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:5000/get_properties_from_attribute",
+				    data: JSON.stringify(search_info),
+				    //async: false,
+				    contentType: "application/json;charset=utf-8",
+				    dataType: "text",
+				    success: function(text) {
+				        console.log("yay");
+				        console.log(text);
+				        // response = text;
+				        // console.log(response);
+				    },
+				    complete: function(response) {
+				        $("#resp onsecontainer").html(response);
+			            console.log(response.responseText)
+			           	var j = JSON.parse(response.responseText);
+			            var trHTML = '';
+
+			            $.each(j, function(i, item) {
+			            	var isPublic = "False";
+			            	var isCommercial = "False";
+			            	if (item.isPublic == "\u0001") {
+			            		isPublic = "True";
+			            	}
+			            	if (item.isCommercial == "\u0001") {
+			            		isCommercial = "True";
+			            	}
+			            	if (jQuery.inArray(String(item.id), items) !== -1) {
+								$('<tr>').html(
+			        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#otherUserPropertyTable');
+
+							}
+										// $('<tr>').html(
+			       //  		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#otherUserPropertyTable');
+						});
+				    }
+				});
 			}				
 		
 		</script>

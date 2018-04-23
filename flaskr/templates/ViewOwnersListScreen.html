@@ -12,29 +12,27 @@
 
       $.ajax({    //create an ajax request to display.php
 
-        type: "POST",
-        url: "http://localhost:5000/get_other_user_properties",  
-        data: JSON.stringify(dic),
-        contentType: "application/json;charset=utf-8",       
-        dataType: "text",   //expect html to be returned                
-        success: function(response){                    
-            $("#responsecontainer").html(response); 
-            alert(response);
+        type: "GET",
+        url: "http://localhost:5000/get_all_users",
+        dataType: "text",   //expect html to be returned
+        success: function(response){
+            $("#responsecontainer").html(response);
+            //alert(response);
         },
-        complete: function(response){                    
-            $("#responsecontainer").html(response); 
+        complete: function(response){
+            $("#responsecontainer").html(response);
             console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+            //alert(response);
             $.each(j, function(i, item) {
-            	
+
             	console.log(item);
     			$('<tr>').html(
-        		"<td>" + item.username + "</td><td>" + item.email + "</td><td>" + item.numProperties + "</td>").appendTo('#viewOwnersListTable');
+        		"<td>" + item.username + "</td><td>" + item.email + "</td><td>" + item.propertyNum + "</td>").appendTo('#viewOwnersListTable');
 			});
-			
-       		
+
+
         	}
 
 	    });
@@ -51,6 +49,10 @@
 			.adminActions {
 				float: left;
 				margin-left: 100px;
+			}
+            .selected {
+				background-color: magenta;
+				color: #FFF;
 			}
 		</style>
 	</head>
@@ -70,10 +72,35 @@
 		<br>
 		<div class="adminActions">
 			<center><p><button id="deleteOwnerAccountButton" type="button">Delete Owner Account</button></p>
+                <script type="text/javascript">
+    				document.getElementById('deleteOwnerAccountButton').onclick = function() {
+                        var selEmail = $("#viewOwnersListTable tr.selected td").eq(1).html();
+                        console.log(selEmail);
+                        var user_info = {
+                            email: selEmail,
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:5000/remove_user",
+                            data: JSON.stringify(user_info),
+                            //async: false,
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "text",
+                            success: function(text) {
+                                console.log("yay");
+                                console.log(text);
+                                location.href="/ViewOwnersListScreen"
+                            },
+                            complete: function(msg) {
+                                console.log(msg)
+                            }
+                        });
+    				};
+    			</script>
 			<p><button id="back" type="button">Back</button></p></center>
 			<script type="text/javascript">
 				document.getElementById('back').onclick = function() {
-					location.href="HomescreenAdmin.html";
+					location.href="/HomescreenAdmin";
 				};
 			</script>
 		</div>
@@ -123,7 +150,7 @@
 			function sortAsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("viewOwnersListTable");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -159,7 +186,7 @@
 			function sortDsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("viewOwnersListTable");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -191,6 +218,18 @@
 					}
 				}
 			}
+
+            var table = document.getElementById('viewOwnersListTable');
+			var selected = document.getElementsByClassName('selected');
+			table.onclick = highlight;
+
+			function highlight(e) {
+				if (selected[0]) {
+					selected[0].className = '';
+				}
+				e.target.parentNode.className = 'selected';
+			}
+
 		</script>
 	</body>
 

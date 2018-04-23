@@ -13,7 +13,7 @@ class User():
         email = json['email']
         password = User.hash_password(json['password'])
         type = json['type']
-        
+
         cursor = db.cursor()
         sql_string = "INSERT INTO User (email, username, password, userType) VALUES ('" \
                 + email + "', '" \
@@ -69,13 +69,13 @@ class User():
           # user = User.query.get(session['user_id'])
           # user.current_user = False
           # user.save()
-          print("Logged out: %s | %s" % (session.pop('user_id'), 
+          print("Logged out: %s | %s" % (session.pop('user_id'),
                                          session.pop('user')))
             return True
         except:
             return False'''
 
-    
+
         print(len(session.keys()))
         if 'user' not in session.keys():
 
@@ -88,7 +88,7 @@ class User():
     def remove_user():
         parsed_json = request.get_json()
         email = parsed_json['email']
-        
+
         cursor = db.cursor()
         sql_string = "DELETE FROM User WHERE email = '" + email + "';"
 
@@ -113,7 +113,7 @@ class User():
     def get_all_users():
         if 'user' in session.keys():
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "SELECT User.username, email, IFNULL(numProperties, 0) AS propertyNum FROM User LEFT JOIN (SELECT ownedBy, COUNT(id) AS numProperties FROM Property GROUP BY ownedBy) AS temp ON User.email = temp.ownedBy WHERE userType = 'owner';"
+            sql_string = "SELECT User.username, email, IFNULL(numProperties, 0) AS propertyNum FROM User LEFT JOIN (SELECT ownedBy, COUNT(id) AS numProperties FROM Property GROUP BY ownedBy) AS temp ON User.username = temp.ownedBy WHERE userType = 'owner';"
 
             try:
                 cursor.execute(sql_string)
@@ -134,4 +134,3 @@ app.add_url_rule('/logout', 'logout', User.logout, methods=['GET'])
 app.add_url_rule('/get_session', 'get_session', User.get_session, methods=['GET'])
 app.add_url_rule('/remove_user', 'remove_user', User.remove_user, methods=['POST'])
 app.add_url_rule('/get_all_users', 'get_all_users', User.get_all_users, methods=['GET'])
-
