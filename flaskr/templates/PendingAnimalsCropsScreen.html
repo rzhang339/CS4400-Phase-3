@@ -29,7 +29,7 @@
            
             $.each(j, function(i, item) {
             	
-            	console.log(item);
+            	
     			$('<tr>').html(
         		"<td>" + item.produceName + "</td><td>" + item.produceType + "</td>").appendTo('#pendingAnimalsCropsScreen');
 			});
@@ -99,7 +99,7 @@
 			function sortAsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("pendingAnimalsCropsScreen");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -135,7 +135,7 @@
 			function sortDsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("pendingAnimalsCropsScreen");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -168,6 +168,50 @@
 				}
 			}
 		</script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
+
+	<script type="text/javascript">
+
+		var table = document.getElementById('pendingAnimalsCropsScreen');
+			var selected = document.getElementsByClassName('selected');
+			table.onclick = highlight;
+
+			function highlight(e) {
+				if (selected[0] && ('tr')) {
+					selected[0].className = '';
+				}
+				e.target.parentNode.className = 'selected';
+			}
+		
+
+		function approve() {
+			var s = $("#pendingAnimalsCropsScreen tr.selected td").eq(0).html();
+			console.log(s);
+			var dic = {
+			'name':s
+		}
+	      $.ajax({    //create an ajax request to display.php
+
+	        type: "POST",
+	        url: "http://localhost:5000/approve_produce",  
+	        data: JSON.stringify(dic),
+	        contentType: "application/json;charset=utf-8",       
+	        dataType: "text",   //expect html to be returned                
+	        success: function(response){                    
+	            $("#responsecontainer").html(response); 
+	           
+	        },
+	        complete: function(response){                    
+	            $("#responsecontainer").html(response); 
+	            console.log(response.responseText);
+	           location.href = '/';
+
+	        }
+
+	    });
+	  }
+	</script>
+
 	</body>
 
 </html>

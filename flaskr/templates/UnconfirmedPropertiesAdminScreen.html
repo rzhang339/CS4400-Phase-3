@@ -14,21 +14,21 @@
 
       $.ajax({    //create an ajax request to display.php
 
-        type: "POST",
-        url: "http://localhost:5000/get_properties_from_attribute",  
+        type: "GET",
+        url: "http://localhost:5000/get_other_user_properties",  
         data: JSON.stringify(dic),
         contentType: "application/json;charset=utf-8",       
         dataType: "text",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
+          
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
             console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+        
             $.each(j, function(i, item) {
             	
             	console.log(item);
@@ -100,7 +100,7 @@
 			<p><button id="back" type="button">Back</button></p>
 			<script type="text/javascript">
 				document.getElementById('back').onclick = function() {
-					location.href="HomescreenAdmin.html";
+					location.href="/";
 				};
 			</script>
 		</div>

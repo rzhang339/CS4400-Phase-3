@@ -249,9 +249,9 @@ WHERE id = '" + currentPropertyID + "';"
 ## visitors
 "SELECT username, User.email, IFNULL(loggedVisits, 0) AS visitNum
 FROM User LEFT JOIN
-    (SELECT email, COUNT(*) AS loggedVisits
+    (SELECT email, COUNT(id) AS loggedVisits
      FROM Visits
-     GROUP BY email) AS temp ON User.email = temp.email
+     GROUP BY email) AS temp ON User.username = temp.email
 WHERE userType = 'visitor';"
 
 ## visitors search bar
@@ -262,9 +262,9 @@ WHERE '" + selectedAttribute + '" = '" + inputAttribute + "';"
 ## owners
 "SELECT username, email, IFNULL(numProperties, 0) AS propertyNum
 FROM User LEFT JOIN
-    (SELECT ownedBy, COUNT(*) AS numProperties
+    (SELECT ownedBy, COUNT(id) AS numProperties
      FROM Property
-     GROUP BY ownedBy) AS temp ON User.email = temp.ownedBy
+     GROUP BY ownedBy) AS temp ON User.username = temp.ownedBy
 WHERE userType = 'owner';"
 
 ## owner search bar
