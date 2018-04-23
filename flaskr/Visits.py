@@ -19,9 +19,9 @@ class Visits():
             cursor = db.cursor()
             sql_string = "INSERT INTO Visits (email, date, rating, id) VALUES ('" \
                 + email + "', '" \
-                + str(date) + "', '" \
-                + rating + "', '" \
-                + id + "');"
+                + str(date) + "', " \
+                + rating + ", " \
+                + id + ");"
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:
@@ -39,7 +39,9 @@ class Visits():
             email = user['email']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = ""
+            sql_string = "SELECT propertyName, date, rating FROM Visits JOIN Property" \
+                    + " ON Visits.id = Property.id WHERE Visits.email = '" \
+                    + email + "';"
 
             try:
                 cursor.execute(sql_string)
@@ -47,53 +49,46 @@ class Visits():
                 print (e)
                 return
 
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            visits = cursor.fetchall()
+            list = []
+            for visit in visits:
+                print (visit)
+                dict = {
+                    "propertyName": visit['propertyName'],
+                    "date": str(visit['date']),
+                    "rating": visit['rating']
+                }
+                list.append(dict)
+            return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
             return return_string  
         else:
             return "not logged in"
 
     @staticmethod
-    def get_property_avg_rating():
+    def remove_visit():
         if 'user' in session.keys():
+            user = session['user']
             parsed_json = request.get_json()
+            email = user['email']
             id = parsed_json['id']
 
-            cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = ""
-
+            cursor = db.cursor()
+            sql_string = "DELETE FROM Visits WHERE id = '" + id + "' AND email = '" + email + "';"
+            print (sql_string)
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:
                 print (e)
                 return
 
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
-            return return_string  
+            return "deleted"
         else:
             return "not logged in"
 
-    @staticmethod
-    def get_num_visits():
-        if 'user' in session.keys():
-            parsed_json = request.get_json()
-            id = parsed_json['id']
 
-            cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = ""
-
-            try:
-                cursor.execute(sql_string)
-            except (pymysql.Error, pymysql.Warning) as e:
-                print (e)
-                return
-
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
-            return return_string  
-        else:
-            return "not logged in"
 
 
 app.add_url_rule('/add_visit', 'add_visit', Visits.add_visit, methods=['POST'])
 app.add_url_rule('/get_user_visits', 'get_user_visits', Visits.get_user_visits, methods=['GET'])
-app.add_url_rule('/get_property_avg_rating', 'add_visit', Visits.add_visit, methods=['POST'])
-app.add_url_rule('/get_num_visits', 'get_num_visits', Visits.get_num_visits, methods=['POST'])
+app.add_url_rule('/remove_visit', 'remove_visit', Visits.remove_visit, methods=['POST'])
+
