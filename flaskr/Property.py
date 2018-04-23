@@ -272,6 +272,10 @@ class Property():
             dict.update(produce_dict)
 
             print (dict)
+            dict['isPublic'] = str(dict['isPublic'])
+            dict['isCommercial'] = str(dict['isCommercial'])
+            dict['ratings'] = str(dict['ratings'])
+            return json.dumps(dict, sort_keys=True, indent=4, separators=(',', ': '))
         else:
             return "not logged in"
 
