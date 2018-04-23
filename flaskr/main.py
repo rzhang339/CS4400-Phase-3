@@ -50,5 +50,13 @@ def nav_to_other_owner_properties():
 def nav_to_homescreen_owner():
 	return render_template('HomescreenOwner.html')
 
+@app.route('/AddProperty')
+def nav_to_add_property():
+	return render_template('AddProperty.html')
+
+@app.route('/ManageProperty')
+def nav_to_manage_property():
+	return render_template('ManageProperty.html')
+
 if __name__ == '__main__':
 	app.run()

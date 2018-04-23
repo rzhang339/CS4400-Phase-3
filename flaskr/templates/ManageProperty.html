@@ -40,7 +40,7 @@
 		<p><button id="submitRequest" type="button">Submit Request</button></p>
 		<p><button id="saveChanges" type="button">Save Changes</button></p>
 		<p><button id="deletePropertyButton" type="button">Delete Property</button>
-		<button id="backButtton" type="button">Back (Don't Save)</button></p>
+		<button id="backButtton" type="button" onclick="goBack()">Back (Don't Save)</button></p>
 		</form></center>
 		<script>
 			function addCrop() {
@@ -55,6 +55,10 @@
 			function removeCrop() {
 				var x = document.getElementById("addedCrops");
 				x.remove(x.selectedIndex);
+			}
+
+			function goBack() {
+				location.href = '/';
 			}
 		
 		</script>

@@ -48,7 +48,7 @@
 		 	<option value="commercialNo">no</option>
 		</select></p>
 		<p><button id="addProperty" type="button">Add Property</button>
-		<button id="cancel" type="button">Cancel</button></p>
+		<button id="cancel" type="button" onclick="goBack()">Cancel</button></p>
 		</form></center>
 
 
@@ -66,6 +66,10 @@
 			    }
 			    
 			    
+			}
+
+			function goBack() {
+				location.href='/';
 			}
 		</script>
 	</body>
