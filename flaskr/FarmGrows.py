@@ -13,8 +13,8 @@ class FarmGrows():
             produceName = parsed_json['produceName']
 
             cursor = db.cursor()
-            sql_string = "INSERT INTO FarmGrows (id, produceName) VALUES ('" \
-                    + id + "', '" + produceName + "')"
+            sql_string = "INSERT INTO FarmGrows (id, produceName) VALUES (" \
+                    + id + ", '" + produceName + "')"
 
             try:
                 cursor.execute(sql_string)

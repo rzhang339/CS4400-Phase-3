@@ -220,6 +220,61 @@ class Property():
         else:
             return "not logged in"
 
+    @staticmethod
+    def get_detailed_property():
+        if 'user' in session.keys():
+
+            parsed_json = request.get_json()
+            id = parsed_json['id']
+            email = parsed_json['email']
+
+
+            dict = {}
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings" \
+                        + " FROM Property LEFT JOIN " \
+                        + "(SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings " \
+                        + "FROM Visits Group By id) as temp ON Property.id = temp.id " \
+                        + "WHERE Property.id = " + id  + ";"
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            property = cursor.fetchone()
+            dict.update(property)
+
+            sql_string = "SELECT username, email FROM User WHERE email = '" + email + "';"
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            property = cursor.fetchone()
+            dict.update(property)
+
+            sql_string = "SELECT produceName, produceType FROM FarmGrows NATURAL JOIN Produce WHERE id = " + id + ";"
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            produces = cursor.fetchall()
+            produce_dict = {}
+            for produce in produces:
+                if produce['produceType'] not in produce_dict.keys():
+                    produce_dict[produce['produceType']] = [produce['produceName']]
+                else:
+                    produce_dict[produce['produceType']].append(produce['produceName'])
+            dict.update(produce_dict)
+
+            print (dict)
+        else:
+            return "not logged in"
+
 
 app.add_url_rule('/add_property', 'add_property', Property.add_property, methods=['POST'])
 app.add_url_rule('/delete_property', 'delete_property', Property.delete_property, methods=['POST'])
@@ -228,6 +283,7 @@ app.add_url_rule('/get_other_user_properties', 'get_other_user_properties', Prop
 app.add_url_rule('/update_property', 'update_property', Property.update_property, methods=['POST'])
 app.add_url_rule('/get_properties_from_attribute', 'get_properties_from_attribute', Property.get_properties_from_attribute, methods=['POST'])
 app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_property_by_id, methods=['POST'])
+app.add_url_rule('/get_detailed_property', 'get_detailed_property', Property.get_detailed_property, methods=['POST'])
 
 
 
