@@ -58,5 +58,29 @@ def nav_to_add_property():
 def nav_to_manage_property():
 	return render_template('ManageProperty.html')
 
+@app.route('/ViewVisitorsListScreen')
+def nav_to_view_visitors_list_screen():
+    return render_template('ViewVisitorsListScreen.html')
+
+@app.route('/ViewOwnersListScreen')
+def nav_to_view_owners_list_screen():
+    return render_template('ViewOwnersListScreen.html')
+
+@app.route('/ConfirmedPropertiesAdminScreen.html')
+def navToConfirmedPropertiesAdminScreen():
+    return render_template('ConfirmedPropertiesAdminScreen.html')
+
+@app.route('/UnconfirmedPropertiesAdminScreen')
+def navToUnconfirmedPropertiesAdminScreen():
+    return render_template('UnconfirmedPropertiesAdminScreen.html')
+
+@app.route('/ApprovedAnimalsCropsScreen')
+def navToApprovedAnimalsCropsScreen():
+    return render_template('ApprovedAnimalsCropsScreen.html')
+
+@app.route('/PendingAnimalsCropsScreen')
+def navToPendingAnimalsCropsScreen():
+    return render_template('PendingAnimalsCropsScreen.html')
+
 if __name__ == '__main__':
 	app.run()
