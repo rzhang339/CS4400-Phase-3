@@ -35,9 +35,26 @@
 
         	document.getElementById('title').innerHTML = "Manage " + j['propertyName'];
         	document.getElementById('gardenName').value = j['propertyName'];
-    		docuemnt.getElementById('')
+    		document.getElementById('type').innerHTML = "Type: " + j['propertyType'];
+    		document.getElementById('address').value = j['streetAddress'];
+    		document.getElementById('city').value = j['city'];
+    		var public = j['isPublic'];
+    		if (public == '\u0001') {
+    			document.getElementById('public').value = "publicTrue";
+    		} else {
+    			document.getElementById('public').value = "publicFalse";
 			
-       		
+       		}
+       		var commercial = j['isCommercial'];
+    		if (commercial == '\u0001') {
+    			document.getElementById('commercial').value = "commercialTrue";
+    		} else {
+    			document.getElementById('commercial').value = "commercialFalse";
+			
+       		}
+       		document.getElementById('zip').value = j['zip'];
+       		document.getElementById('userID').innerHTML = "ID: " + j['id']
+       		document.getElementById('size').value = j['size'];
         	}
 
 	    });
@@ -56,19 +73,19 @@
 	<body>
 		<center><form>
 		<p>Name: <input type="text" name="gardenName" id="gardenName"><label id="type">Type:</label></p>
-		<p>Address<input type="text" name="gardenAddress">
-			Public:<select>
+		<p>Address<input type="text" name="gardenAddress" id="address">
+			Public:<select id='public'>
 			<option value="publicTrue">True</option>
 			<option value="publicFalse">False</option>
 		</select>
 		</p>
-		<p>City: <input type="text" name="city"> 
-			Commercial:<select>
+		<p>City: <input type="text" name="city" id="city"> 
+			Commercial:<select id="commercial">
 			<option value="commercialTrue">True</option>
 			<option value="commercialFalse">False</option>
 		</select></p>
-		<p>zip: <input type="text" name="zip">ID</p>
-		<p>Size(acres):<input type="text" name="acres"></p>
+		<p>zip: <input type="text" name="zip" id='zip'><label id="userID">ID</label></p>
+		<p>Size(acres):<input type="text" name="acres" id='size'></p>
 		<p>Add new crop:<select id="cropList">
 			<option value="" selected disabled hidden>Select Approved Crop</option>
 		  	<option value="Brocolli">Brocolli</option>
