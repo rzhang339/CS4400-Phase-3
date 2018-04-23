@@ -110,10 +110,10 @@ WHERE id = '" + currentPropertyID + "';"
 ## remove a crop, put constraint where number of animals and crops must be >= 1
 "DELETE FROM FarmGrows
 WHERE id = '" + currentPropertyID + "' AND produceName = '" + selectedCrop + "';"
-"SELECT COUNT() AS numberOfAnimals
+"SELECT COUNT(*) AS numberOfAnimals
 FROM FarmGrows NATURAL JOIN Produce
 WHERE id = '" + currentPropertyID + "' AND produceType = 'animal';"
-"SELECT COUNT() AS numberOfCrops
+"SELECT COUNT(*) AS numberOfCrops
 FROM FarmGrows NATURAL JOIN Produce
 WHERE id = '" + currentPropertyID + "' AND produceType != 'animal';"
 
