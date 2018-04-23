@@ -207,7 +207,7 @@ class Property():
             order = parsed_json['order']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = ""
+            sql_string = "SELECT * from Property WHERE " + attribute + " = '" + value + "' ORDER BY " + sort_by + " " + order
 
             try:
                 cursor.execute(sql_string)
@@ -215,7 +215,11 @@ class Property():
                 print (e)
                 return
 
-            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            list = cursor.fetchall()
+            for dict in list:
+                dict['isPublic'] = str(dict['isPublic'])
+                dict['isCommercial'] = str(dict["isCommercial"])
+            return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
             return return_string
         else:
             return "not logged in"
