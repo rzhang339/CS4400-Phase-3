@@ -249,6 +249,7 @@ class Property():
         if 'user' in session.keys():
 
             parsed_json = request.get_json()
+            print(parsed_json)
             id = parsed_json['id']
             email = parsed_json['email']
 
