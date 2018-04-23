@@ -225,14 +225,14 @@ class Property():
             for k, v in parsed_json.items():
                 if k != 'id':
                     if not first:
-                        sql_string != ", "
+                        sql_string += ", "
                     else:
                         first = False
                     if k == 'isPublic' or k == 'isCommercial':
                         sql_string += k + " = " + v
                     else:
                         sql_string += k + " = '" + v + "'"
-            sql_string += "' WHERE id = '" + parsed_json['id'] + "';"
+            sql_string += " WHERE id = " + parsed_json['id'] + ";"
             print (sql_string)
             try:
                 cursor.execute(sql_string)

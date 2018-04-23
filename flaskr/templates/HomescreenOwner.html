@@ -192,11 +192,13 @@
 				});
 				*/
 				var propertyID = $("#homescreenOwnerTable tr.selected td").eq(8).html();
+				var propertyType = $("#homescreenOwnerTable tr.selected td").eq(5).html();
 				console.log(propertyID);
 				var property_info = {
 					id: propertyID,
 				};
 				sessionStorage.setItem('id', propertyID);
+				sessionStorage.setItem('type', propertyType);
 				$.ajax({
 					type: "POST",
 					url: "http://localhost:5000/update_property",

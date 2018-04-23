@@ -169,12 +169,24 @@ class Produce():
     @staticmethod
     def get_new_crop_drop_down():
         if 'user' in session.keys():
-            parsed_json = json.get_request()
+            parsed_json = request.get_json()
             id = parsed_json['id']
             produce_type = parsed_json['produce_type']
             
-            cursor = db.cursor()
-            sql_string = "SELECT produceName FROM FarmGrows NATURAL JOIN Produce WHERE id = '" + currentPropertyID + "' AND produceType = '" + typeDependingOnPropertyType + "';"
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "SELECT produceName FROM FarmGrows NATURAL JOIN Produce WHERE id = '" + id + "' AND produceType = '" + produce_type + "';"
+
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return_string = json.dumps(cursor.fetchall(), sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
+        else:
+            return "not logged in"
+
 
 
 
@@ -187,5 +199,6 @@ app.add_url_rule('/get_farm_animals', 'get_farm_animals', Produce.get_farm_anima
 app.add_url_rule('/get_farm_crops', 'get_farm_crops', Produce.get_farm_crops, methods=['GET'])
 app.add_url_rule('/get_garden_crops', 'get_garden_crops', Produce.get_garden_crops, methods=['GET'])
 app.add_url_rule('/get_orchard_crops', 'get_orchard_crops', Produce.get_orchard_crops, methods=['GET'])
+app.add_url_rule('/get_new_crop_drop_down', 'get_new_crop_drop_down', Produce.get_new_crop_drop_down, methods=['POST'])
 
 

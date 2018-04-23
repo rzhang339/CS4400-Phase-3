@@ -5,6 +5,7 @@
 	<script type="text/javascript">
 
 	$(document).ready(function() {
+		populate_crops();
 		/*var dic = {
 			'sort_by':"propertyName",
 			'order':'asc'
@@ -88,7 +89,7 @@
 		<p>Size(acres):<input type="text" name="acres" id='size'></p>
 		<p>Add new crop:<select id="cropList">
 			<option value="" selected disabled hidden>Select Approved Crop</option>
-		  	<option value="Brocolli">Brocolli</option>
+		  	<option value="Broccoli">Broccoli</option>
 		 	<option value="Peppers">Peppers</option>
 		 	<option value="Corn">Corn</option>
 
@@ -106,6 +107,7 @@
 		</form></center>
 		<script>
 			var updates = {};
+			console.log(updates);
 
 			$('.form :input').change(function(e) {
 				updates[$(e.target).attr('id')] =  $(e.target).attr('value');
@@ -117,27 +119,46 @@
 
 
 			document.getElementById('saveChanges').onclick = function() {
-				$.ajax({    //create an ajax request to display.php
-			        type: "POST",
-			        url: "http://localhost:5000/update_multiple_attributes",  
-			        data: JSON.stringify(updates),
-			        contentType: "application/json;charset=utf-8",       
-			        dataType: "text",
-			        success: function(msg) {
-			        	if (msg == "Update successful") {
-			        		alert('successfully updated')
-			        	} else {
-			        		alert('error')
-			        	}
-			        } 
-			    });      
+				console.log(updates)
+				if (Object.keys(updates).length != 0) {
+					updates['id'] = document.getElementById('userID').innerHTML.slice(4)
+					$.ajax({    //create an ajax request to display.php
+				        type: "POST",
+				        url: "http://localhost:5000/update_multiple_attributes",  
+				        data: JSON.stringify(updates),
+				        contentType: "application/json;charset=utf-8",       
+				        dataType: "text",
+				        success: function(msg) {
+				        	if (msg == "Update successful") {
+				        		alert('successfully updated')
+				        	} else {
+				        		alert('error')
+				        	}
+				        } 
+				    }); 
+				}     
 			};
 			function addCrop() {
-				var x = document.getElementById("cropList").value;
-				var m = document.getElementById("addedCrops");
-				var option = document.createElement("option");
-				option.text = x;
-				m.add(option);
+				console.log("adding crop");
+				var dict = {
+					produceName: document.getElementById("cropList").value,
+					id: document.getElementById('userID').innerHTML.slice(4)
+				}
+				$.ajax({    //create an ajax request to display.php
+			        type: "POST",
+			        url: "http://localhost:5000/add_relation",  
+			        data: JSON.stringify(dict),
+			        contentType: "application/json;charset=utf-8",       
+			        dataType: "text",   //expect html to be returned                
+			        success: function(response){                    
+			            $("#responsecontainer").html(response); 
+			            
+			        }
+			    });
+				// var m = document.getElementById("addedCrops");
+				// var option = document.createElement("option");
+				// option.text = x;
+				// m.add(option);
 			
 			}
 
@@ -148,6 +169,11 @@
 
 			function goBack() {
 				location.href = '/';
+			}
+
+			function populate_crops() {
+				var type = sessionStorage.getItem('type');
+				console.log(type);
 			}
 
 		
