@@ -85,27 +85,27 @@ class Visits():
         else:
             return "not logged in"
 
-        @staticmethod
-        def remove_all_visits():
-            if 'user' in session.keys():
-                #user = session['user']
-                parsed_json = request.get_json()
-                username = parsed_json['username']
-                print (username)
-                #id = parsed_json['id']
+    @staticmethod
+    def remove_all_visits():
+        if 'user' in session.keys():
+            #user = session['user']
+            parsed_json = request.get_json()
+            username = parsed_json['username']
+            print (username)
+            #id = parsed_json['id']
 
-                cursor = db.cursor()
-                sql_string = "DELETE FROM Visits WHERE username = '" + username + "';"
-                print (sql_string)
-                try:
-                    cursor.execute(sql_string)
-                except (pymysql.Error, pymysql.Warning) as e:
-                    print (e)
-                    return
+            cursor = db.cursor()
+            sql_string = "DELETE FROM Visits WHERE username = '" + username + "';"
+            print (sql_string)
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
 
-                return "deleted"
-            else:
-                return "not logged in"
+            return "deleted"
+        else:
+            return "not logged in"
 
     @staticmethod
     def get_visitors():
@@ -136,8 +136,32 @@ class Visits():
         else:
             return "not logged in"
 
+    @staticmethod
+    def remove_visitor():
+        if 'user' in session.keys():
+            #user = session['user']
+            parsed_json = request.get_json()
+            username = parsed_json['username']
+            print (username)
+            #id = parsed_json['id']
+
+            cursor = db.cursor()
+            sql_string = "DELETE FROM User WHERE username = '" + username + "';"
+            print (sql_string)
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
+
+            return "deleted"
+        else:
+            return "not logged in"
+
 
 app.add_url_rule('/add_visit', 'add_visit', Visits.add_visit, methods=['POST'])
 app.add_url_rule('/get_user_visits', 'get_user_visits', Visits.get_user_visits, methods=['GET'])
 app.add_url_rule('/remove_visit', 'remove_visit', Visits.remove_visit, methods=['POST'])
 app.add_url_rule('/get_visitors', 'get_visitors', Visits.get_visitors, methods=['GET'])
+app.add_url_rule('/remove_all_visits', 'remove_all_visits', Visits.remove_all_visits, methods=['POST'])
+app.add_url_rule('/remove_visitor', 'remove_visitor', Visits.remove_visitor, methods=['POST'])
