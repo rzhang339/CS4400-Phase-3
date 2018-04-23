@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	
+
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
 
 	<script type="text/javascript">
@@ -14,20 +14,20 @@
       $.ajax({    //create an ajax request to display.php
 
         type: "POST",
-        url: "http://localhost:5000/get_user_properties",  
+        url: "http://localhost:5000/get_user_properties",
         data: JSON.stringify(dic),
-        contentType: "application/json;charset=utf-8",       
-        dataType: "text",   //expect html to be returned                
-        success: function(response){                    
-            $("#responsecontainer").html(response); 
-            
+        contentType: "application/json;charset=utf-8",
+        dataType: "text",   //expect html to be returned
+        success: function(response){
+            $("#responsecontainer").html(response);
+
         },
-        complete: function(response){                    
-            $("#responsecontainer").html(response); 
+        complete: function(response){
+            $("#responsecontainer").html(response);
             console.log(response.responseText)
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            
+
             $.each(j, function(i, item) {
             	var isPublic = "False";
             	var isCommercial = "False";
@@ -37,12 +37,12 @@
             	if (item.isCommercial == "\u0001") {
             		isCommercial = "True";
             	}
-            	
+
     			$('<tr>').html(
         		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#homescreenOwnerTable');
 			});
-			
-       		
+
+
         	}
 
 	    });
@@ -102,7 +102,7 @@
 					<th>Avg. Rating <button id="ratingAsc"> &#9650</button> <button id="ratingDsc"> &#9660</button></th>
 				</tr>
 			</thead>
-			
+
 		</table></center>
 		<br>
 
@@ -142,22 +142,22 @@
                     });
                 }
             </script>
-		</div> 
+		</div>
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">		</script>
 		<script type="text/javascript">
-		
+
 			var table = document.getElementById('homescreenOwnerTable');
 			var selected = document.getElementsByClassName('selected');
 			table.onclick = highlight;
-			
+
 			function highlight(e) {
 				if (selected[0]) {
 					selected[0].className = '';
 				}
 				e.target.parentNode.className = 'selected';
 			}
-			
+
 
 /*
 			$(document).ready(function () {
@@ -177,12 +177,12 @@
 				/*
 				$("#searchPropertiesDropdown").click(function(){
 					var selectedPropertyAttr = $('#searchPropertiesDropdown').find(":selected").text();
-					alert(selectedPropertyAttr);				
+					alert(selectedPropertyAttr);
 				});
 				*/
 			//});
 
-			
+
 			function manageProperty() {
 				/*
 				$('#managePropertyButton').on('click', function(e){
@@ -214,7 +214,7 @@
 				    }
 				});
 
-				location.href='/ManageProperty?';
+				location.href='/ManageProperty';
 			}
 
 			function searchProperty() {
