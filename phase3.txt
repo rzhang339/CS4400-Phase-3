@@ -18,76 +18,76 @@ VALUES ('" + propertyName + "', '" + id + "', '" + isPublic + "', '" + size + "'
 ## Farm animal drop down:
 "SELECT produceName
 FROM Produce
-WHERE ProduceType == 'animal'
+WHERE ProduceType = 'animal'
 ORDER BY produceName ASC;"
 
 ## Farm crop drop down:
 "SELECT produceName
 FROM Produce
-WHERE ProduceType == 'fruit' OR ProduceType == 'nut' OR ProduceType == 'vegetable' OR ProduceType == 'flower'
+WHERE ProduceType = 'fruit' OR ProduceType = 'nut' OR ProduceType = 'vegetable' OR ProduceType = 'flower'
 ORDER BY produceName ASC;"
 
 ## Garden crop drop down:
 "SELECT produceName
 FROM Produce
-WHERE ProduceType == 'vegetable' OR ProduceType == 'flower'
+WHERE ProduceType = 'vegetable' OR ProduceType = 'flower'
 ORDER BY produceName ASC;"
 
 ## Orchard crop drop down:
 "SELECT produceName
 FROM Produce
-WHERE ProduceType == 'fruit' OR ProduceType == 'nut';"
+WHERE ProduceType = 'fruit' OR ProduceType = 'nut';"
 "INSERT INTO FarmGrows (id, produceName)
 VALUES ('" + id + "', '" + produceName + "')
 ORDER BY produceName ASC;"
 
-• Your properties table, need to add functionality to change ratings to "n/a" when ratings == null
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS yourProperties
+• Your properties table, need to add functionality to change ratings to "n/a" when ratings = null
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
-WHERE ownedBy == '" + logged_in_user + "'
-ORDER BY name ASC;"
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) as ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
+WHERE ownedBy = '" + logged_in_user + "'
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
 FROM yourProperties
-WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 
 ## detailed property view
 "SELECT *
 FROM yourProperties
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT username, email
 FROM User
-WHERE email == ownedBy;"
+WHERE email = ownedBy;"
 "SELECT produceName, produceType
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 
 • View other owner’s properties
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings into otherProperties
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
-WHERE approvedBy != null AND ownedBy != '" + logged_in_user + "'
-ORDER BY name ASC;"
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
+WHERE approvedBy IS NOT NULL AND ownedBy != '" + logged_in_user + "'
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
 FROM otherProperties
-WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 
 ## detailed property view
 "SELECT *
 FROM otherProperties
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT username, email
 FROM User
-WHERE email == ownedBy;"
+WHERE email = ownedBy;"
 "SELECT produceName, produceType
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 
 • Manage a property
 ## see above for add new crop
@@ -95,32 +95,32 @@ WHERE id == '" + selectedPropertyID + "';"
 ## get property type and ID
 "SELECT propertyType, id
 FROM Property
-WHERE id == '" + currentPropertyID + "';"
+WHERE id = '" + currentPropertyID + "';"
 
 ## update property attributes, delete all visits, set to unconfirmed
 "UPDATE Property
 SET '" + updatedAttribute + "' = '" + updatedAttributeValue + "'
-WHERE id == '" + currentPropertyID + "';"
+WHERE id = '" + currentPropertyID + "';"
 "DELETE FROM Visits
-WHERE id == '" + currentPropertyID + "';"
+WHERE id = '" + currentPropertyID + "';"
 "UPDATE Property
-SET approvedBy == null
-WHERE id == '" + currentPropertyID + "';"
+SET approvedBy = null
+WHERE id = '" + currentPropertyID + "';"
 
 ## remove a crop, put constraint where number of animals and crops must be >= 1
 "DELETE FROM FarmGrows
-WHERE id == '" + currentPropertyID + "' AND produceName == '" + selectedCrop + "';"
+WHERE id = '" + currentPropertyID + "' AND produceName = '" + selectedCrop + "';"
 "SELECT COUNT() AS numberOfAnimals
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + currentPropertyID + "' AND produceType == 'animal';"
+WHERE id = '" + currentPropertyID + "' AND produceType = 'animal';"
 "SELECT COUNT() AS numberOfCrops
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + currentPropertyID + "' AND produceType != 'animal';"
+WHERE id = '" + currentPropertyID + "' AND produceType != 'animal';"
 
 ## select new crop drop down
 "SELECT produceName
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + currentPropertyID + "' AND produceType == '" + typeDependingOnPropertyType + "';"
+WHERE id = '" + currentPropertyID + "' AND produceType = '" + typeDependingOnPropertyType + "';"
 
 ## add selected crop
 "INSERT INTO FarmGrows (id, produceName)
@@ -137,12 +137,12 @@ VALUES ('" + newProduceName + "', '" + newProduceType + "', 0)"
 
 ## delete property
 "DELETE FROM Property
-WHERE id  == '" + currentPropertyID + "';"
+WHERE id  = '" + currentPropertyID + "';"
 
 • Search their properties
 "SELECT *
 FROM yourProperties
-WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 
 • Log out
 ## raymond got this :)
@@ -150,73 +150,73 @@ WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
 • View list of all visitors
 "SELECT *
 FROM USERS
-WHERE userType == 'visitor';"
+WHERE userType = 'visitor';"
 
 • View a list of all owners
 "SELECT *
 FROM USERS
-WHERE userType == 'owner';"
+WHERE userType = 'owner';"
 
 • View all confirmed properties
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS confirmedProperties
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, approvedBy, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
-WHERE approvedBy != null
-ORDER BY name ASC;"
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) as ratings
+     FROM Visits Group By id) as temp ON Property.id = temp.id
+WHERE approvedBy IS NOT NULL
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
 FROM confirmedProperties
-WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 
 ## detailed property view
 "SELECT *
 FROM confirmedProperties
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT username, email
 FROM User
-WHERE email == ownedBy;"
+WHERE email = ownedBy;"
 "SELECT produceName, produceType
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 
 • View all unconfirmed properties
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, username  AS unconfirmedProperties
-FROM Property NATURAL JOIN User
-WHERE approvedBy == null
-ORDER BY name ASC;"
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, isCommercial, id, username
+FROM Property JOIN User ON Property.ownedBy = User.email
+WHERE approvedBy IS NULL
+ORDER BY propertyName ASC;"
 
 ## search by drop down menu and text box
 "SELECT *
 FROM unconfirmedProperties
-WHERE '" + searchableAttributes + "' == '" + searchByTerm + "';"
+WHERE '" + searchableAttributes + "' = '" + searchByTerm + "';"
 
 ## detailed property view
 "SELECT *
 FROM unconfirmedProperties
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT username, email
 FROM User
-WHERE email == ownedBy;"
+WHERE email = ownedBy;"
 "SELECT produceName, produceType
 FROM FarmGrows NATURAL JOIN Produce
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 
 • View all approved animals/crops
 "SELECT *
 FROM Produce
-WHERE itemApproved == '1';"
+WHERE itemApproved = '1';"
 
 • View all pending animals/crops
 "SELECT *
 FROM Produce
-WHERE itemApproved == '0';"
+WHERE itemApproved = '0';"
 
 ## approve a crop
 "UPDATE produce
-SET itemApproved == '1'
-WHERE produceName == '" + selectedProduce + "';"
+SET itemApproved = '1'
+WHERE produceName = '" + selectedProduce + "';"
 
 • Log out
 ## handled by raymond :)
@@ -228,90 +228,90 @@ VALUES ('" + newProduceName + "', '" + newProduceType + "', 0)"
 ## search crops drop down
 "SELECT produceName
 FROM Produce
-WHERE produceType == '" + selectedProduceType + "';"
+WHERE produceType = '" + selectedProduceType + "';"
 
 ## delete an approved crop
 "DELETE FROM Produce
-WHERE produceName == '" + selectedProduce + "';"
+WHERE produceName = '" + selectedProduce + "';"
 
 • Validate owner requests to include a new animal/crop
 "UPDATE Produce
-SET itemApproved == '1'
-WHERE produceName == '" + selectedProduce + "';"
+SET itemApproved = '1'
+WHERE produceName = '" + selectedProduce + "';"
 
 • Validate a property that is invalid
 "UPDATE Property
-SET approvedBy == '" + adminName + "'
-WHERE id == '" + currentPropertyID + "';"
+SET approvedBy = '" + adminName + "'
+WHERE id = '" + currentPropertyID + "';"
 
 • View a list of all owners in the system and a list of all visitors in the system
 
 ## visitors
-"SELECT username, email, IFNULL(loggedVisits, 0) AS visitorTable
+"SELECT username, User.email, IFNULL(loggedVisits, 0) AS visitNum
 FROM User LEFT JOIN
-    (SELECT email, COUNT() AS loggedVisits
+    (SELECT email, COUNT(*) AS loggedVisits
      FROM Visits
-     GROUP BY email) AS temp ON User.email == temp.email
-WHERE userType == 'visitor';"
+     GROUP BY email) AS temp ON User.email = temp.email
+WHERE userType = 'visitor';"
 
 ## visitors search bar
 "SELECT *
 FROM visitorTable
-WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+WHERE '" + selectedAttribute + '" = '" + inputAttribute + "';"
 
 ## owners
-"SELECT username, email, IFNULL(numProperties, 0) AS ownerTable
+"SELECT username, email, IFNULL(numProperties, 0) AS propertyNum
 FROM User LEFT JOIN
-    (SELECT ownedBy, COUNT() AS numProperties
+    (SELECT ownedBy, COUNT(*) AS numProperties
      FROM Property
-     GROUP BY ownedBy) AS temp ON User.email == temp.ownedBy
-WHERE userType == 'visitor';"
+     GROUP BY ownedBy) AS temp ON User.email = temp.ownedBy
+WHERE userType = 'owner';"
 
 ## owner search bar
 "SELECT *
 FROM ownerTable
-WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+WHERE '" + selectedAttribute + '" = '" + inputAttribute + "';"
 
 • Delete any visitor or owner account and all information tied to it
 "DELETE FROM User
-WHERE email == '" + selectedUser + "';"
+WHERE email = '" + selectedUser + "';"
 
 • Delete a visitor’s visit history log
 "DELETE FROM Visits
-WHERE email == '" + selectedUser + "';"
+WHERE email = '" + selectedUser + "';"
 
 • See which admin verified which property (as an additional column in the
 confirmed properties table)
 ## included in confirmedProperties table
 
 • Visitor login table
-"SELECT name, streetAddress, city, zip, size, propertyType, isPublic,  isCommercial, id, IFNULL(numVisits, 0) AS visits, ratings AS visitorLogin,
+"SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic,  isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings
 FROM Property LEFT JOIN
-    (SELECT id, COUNT() AS numVisits, AVG(ratings) as ratings
-     FROM Visits Group By p_id)
-WHERE approvedBy != null
-ORDER BY name ASC;"
+    (SELECT id, COUNT(*) AS numVisits, AVG(rating) as ratings
+     FROM Visits Group By id) AS temp ON Property.id = temp.id
+WHERE approvedBy IS NOT NULL
+ORDER BY propertyName ASC;"
 
 # visitor login search bar
 "SELECT *
 FROM visitorLogin
-WHERE '" + selectedAttribute + '" == '" + inputAttribute + "';"
+WHERE '" + selectedAttribute + '" = '" + inputAttribute + "';"
 
 ## visitor login detail view
 "SELECT *
 FROM visitorLogin
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT username, email
-FROM User JOIN Property ON User.email == Property.ownedBy
-WHERE id == '" + selectedPropertyID + "';"
+FROM User JOIN Property ON User.email = Property.ownedBy
+WHERE id = '" + selectedPropertyID + "';"
 "SELECT produceName
 FROM FarmGrows
-WHERE id == '" + selectedPropertyID + "';"
+WHERE id = '" + selectedPropertyID + "';"
 
 ## check to see if rating has been left
 "Select *
 FROM Visits
-WHERE id == '" + selectedPropertyID + "' && email == '" + logged_in_user + "';"
+WHERE id = '" + selectedPropertyID + "' && email = '" + logged_in_user + "';"
 
 ## log a visit
 "INSERT INTO Visits (email, date, rating, id)
@@ -319,9 +319,9 @@ VALUES ('" + logged_in_user + "', '" + date + "', '" + rating + "', '" + selecte
 
 # unlog a visit
 "DELETE FROM Visits
-WHERE id == '" + selectedPropertyID + "' AND email == '" + logged_in_user"';"
+WHERE id = '" + selectedPropertyID + "' AND email = '" + logged_in_user"';"
 
 # your logged visits
 "SELECT propertyName, date, rating
-FROM Visits JOIN Property ON Visits.id == Property.id
-WHERE Visits.email == '" + logged_in_user + "';"
+FROM Visits JOIN Property ON Visits.id = Property.id
+WHERE Visits.email = '" + logged_in_user + "';"
