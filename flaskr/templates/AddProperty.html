@@ -10,22 +10,22 @@
 
 	<body>
 		<center><form>
-		<p>Property Name*: <input type="text" name="propertyName"></p>
-		<p>Street Address*: <input type="text" name="streetAddress"></p>
-		<p>City*: <input type="textb" name="city"> 
-			Zip*: <input type="text" name="zip">
-			Acres*:<input type="text" name="acres"></p>
+		<p>Property Name*: <input type="text" id="propertyName"></p>
+		<p>Street Address*: <input type="text" id="streetAddress"></p>
+		<p>City*: <input type="textb" id="city"> 
+			Zip*: <input type="text" id="zip">
+			Acres*:<input type="text" id="acres"></p>
 		<p>Property Type*: <select id="propertyType" onChange="check()">
-		  	<option value="farm">Farm</option>
-		 	<option value="garden">Garden</option>
-		  	<option value="orchard">Orchard</option>
+		  	<option id="farm">Farm</option>
+		 	<option id="garden">Garden</option>
+		  	<option id="orchard">Orchard</option>
 		</select> 
 		<label id="animalLabel">Animal*:</label><select id="animalType">
 			<option value="" selected disabled hidden>Select...</option>
 		  	<option value="Cow">Cow</option>
 		 	<option value="Horse">Horse</option>
 		  	<option value="Pig">Pig</option>
-		  	<option value="Sheep">Sheep</option>
+		  	<option value="" ="Sheep">Sheep</option>
 		  	<option value="Goat">Goat</option>
 		  	<option value="Chicken">Chicken</option>
 		</select>
@@ -38,16 +38,16 @@
 		</select>
 		</p>
 		<p>	
-		Public?*: <select>
+		Public?*: <select id="isPublic">
 		  	<option value="publicYes">yes</option>
 		 	<option value="publicNo">no</option>
 		</select></p>
 		<p>
-		Commercial?*: <select>
+		Commercial?*: <select id="isCommercial">
 		  	<option value="commercialYes">yes</option>
 		 	<option value="commercialNo">no</option>
 		</select></p>
-		<p><button id="addProperty" type="button">Add Property</button>
+		<p><button id="addProperty" type="button" onclick="add()">Add Property</button>
 		<button id="cancel" type="button" onclick="goBack()">Cancel</button></p>
 		</form></center>
 
@@ -72,4 +72,40 @@
 				location.href='/';
 			}
 		</script>
+				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"> </script>
+
+				<script type="text/javascript">
+			function add() {
+			
+				location.href('/');
+			
+				var dic = {
+					'propertyName': document.getElementById("propertyname").value,
+					'isPublic': document.getElementById('isPublic').value,
+					'size': document.getElementById('acres').value,
+					'isCommercial': document.getElementById('isCommercial').value,
+					'streetAddress': document.getElementById('streetAddress').value,
+					'city': document.getElementById('city').value,
+					'zip': document.getElementById('zip').value,
+					'propertyType': document.getElementById('propertyType').value
+					'ownedBy': "Bob"
+				}
+
+		      $.ajax({    //create an ajax request to display.php
+
+		        type: "POST",
+		        url: "http://localhost:5000/add_property",  
+		        data: JSON.stringify(dic),
+		        contentType: "application/json;charset=utf-8",       
+		        dataType: "text",   //expect html to be returned                
+		        success: function(response){                    
+		            $("#responsecontainer").html(response); 
+		            
+		        }
+	    
+
+		    });
+			
+		}
+</script>
 	</body>
