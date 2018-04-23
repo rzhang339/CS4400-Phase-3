@@ -60,7 +60,7 @@ class Visits():
                 }
                 list.append(dict)
             return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
-            return return_string  
+            return return_string
         else:
             return "not logged in"
 
@@ -85,10 +85,35 @@ class Visits():
         else:
             return "not logged in"
 
+    # this isn't right i tried to implement it to fill the visitors in system table
+    @staticmethod
+    def get_visitors():
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        sql_string = "select User.username, email, count(*) as visitCount"\
+        + "from User left join Visits on User.username = Visits.username"\
+        + "where userType = 'visitor' Group by Visits.username;"
 
+        try:
+            cursor.execute(sql_string)
+        except (pymysql.Error, pymysql.Warning) as e:
+            print (e)
+            return
+
+        visits = cursor.fetchall()
+        list = []
+        for visit in visits:
+            print (visit)
+            dict = {
+                "username": str(visit['username']),
+                "email": str(visit['email']),
+                "visitCount": visit['visitCount']
+            }
+            list.append(dict)
+            return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
+            return return_string
 
 
 app.add_url_rule('/add_visit', 'add_visit', Visits.add_visit, methods=['POST'])
 app.add_url_rule('/get_user_visits', 'get_user_visits', Visits.get_user_visits, methods=['GET'])
 app.add_url_rule('/remove_visit', 'remove_visit', Visits.remove_visit, methods=['POST'])
-
+app.add_url_rule('/get_visitors', 'get_visitors', Visits.get_visitors, methods=['GET'])
