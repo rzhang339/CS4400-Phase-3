@@ -72,6 +72,31 @@
 		<br>
 		<div class="adminActions">
 			<center><p><button id="deleteOwnerAccountButton" type="button">Delete Owner Account</button></p>
+                <script type="text/javascript">
+    				document.getElementById('deleteOwnerAccountButton').onclick = function() {
+                        var selEmail = $("#viewOwnersListTable tr.selected td").eq(1).html();
+                        console.log(selEmail);
+                        var user_info = {
+                            email: selEmail,
+                        }
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:5000/remove_user",
+                            data: JSON.stringify(user_info),
+                            //async: false,
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "text",
+                            success: function(text) {
+                                console.log("yay");
+                                console.log(text);
+                                location.href="/ViewOwnersListScreen"
+                            },
+                            complete: function(msg) {
+                                console.log(msg)
+                            }
+                        });
+    				};
+    			</script>
 			<p><button id="back" type="button">Back</button></p></center>
 			<script type="text/javascript">
 				document.getElementById('back').onclick = function() {
@@ -194,7 +219,7 @@
 				}
 			}
 
-            var table = document.getElementById('homescreenOwnerTable');
+            var table = document.getElementById('viewOwnersListTable');
 			var selected = document.getElementsByClassName('selected');
 			table.onclick = highlight;
 
