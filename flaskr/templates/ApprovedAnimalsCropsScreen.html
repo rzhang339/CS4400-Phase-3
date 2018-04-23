@@ -12,26 +12,26 @@
 
       $.ajax({    //create an ajax request to display.php
 
-        type: "POST",
-        url: "http://localhost:5000/get_other_user_properties",  
+        type: "GET",
+        url: "http://localhost:5000/get_approved_produce",  
         data: JSON.stringify(dic),
         contentType: "application/json;charset=utf-8",       
         dataType: "text",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
+           
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
             console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+            
             $.each(j, function(i, item) {
             	
             	console.log(item);
     			$('<tr>').html(
-        		"<td>" + item.name + "</td><td>" + item.type + "</td>").appendTo('#approvedAnimalsCropsTable');
+        		"<td>" + item.produceName + "</td><td>" + item.produceType + "</td>").appendTo('#approvedAnimalsCropsTable');
 			});
 			
        		
@@ -91,7 +91,7 @@
 			<p><button id="back" type="button">Back</button></p></center>
 			<script type="text/javascript">
 				document.getElementById('back').onclick = function() {
-					location.href="HomescreenAdmin.html";
+					location.href="/";
 				};
 			</script>
 		</div>
