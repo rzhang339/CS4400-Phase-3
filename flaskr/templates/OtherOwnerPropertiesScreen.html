@@ -171,7 +171,7 @@
 			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p></center>
 		</div>
 		<div class="ownerActions">
-			<center><p><button id="viewPropertyDetailsButton" type="button">View Property Details</button></p>
+			<center><p><button id="viewPropertyDetailsButton" onclick="viewPropertyDetails()" type="button">View Property Details</button></p>
 			<p><button id="backButton" type="button" onclick="goBack()">Back</button></p></center>
 			<script type="text/javascript">
 				function goBack() {
@@ -274,6 +274,11 @@
     			$('#wrapper').dialog('open');
     			return false;
 			});
+		</script>
+		<script>
+			function viewPropertyDetails() {
+				alert("Name: ");
+			}
 		</script>
 	</body>
 
