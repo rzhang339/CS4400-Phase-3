@@ -218,16 +218,20 @@ class Property():
     def update_multiple_attributes():
         if 'user' in session.keys():
             parsed_json = request.get_json()
+            print (parsed_json)
             cursor = db.cursor()
             sql_string = "UPDATE Property SET "
             first = True
-            for k, v in parsed_json:
+            for k, v in parsed_json.items():
                 if k != 'id':
-                    if !first:
+                    if not first:
                         sql_string != ", "
                     else:
                         first = False
-                    sql_string += k + " = '" + v + "'"
+                    if k == 'isPublic' or k == 'isCommercial':
+                        sql_string += k + " = " + v
+                    else:
+                        sql_string += k + " = '" + v + "'"
             sql_string += "' WHERE id = '" + parsed_json['id'] + "';"
             print (sql_string)
             try:
