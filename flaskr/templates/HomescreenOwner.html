@@ -88,18 +88,18 @@
 		<center><table id="homescreenOwnerTable" border="1">
 			<thead>
 				<tr>
-					<th>Name <button id="asc" onclick="sortAsc()"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Name <button id="nameAsc"> &#9650</button> <button id="nameDsc"> &#9660</button></th>
 					<th>Address</th>
-					<th>City <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>City <button id="cityAsc"> &#9650</button> <button id="cityDsc"> &#9660</button></th>
 					<th>Zip</th>
 					<th>Size</th>
-					<th>Type <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Type <button id="typeAsc"> &#9650</button> <button id="typeDsc"> &#9660</button></th>
 					<th>Public</th>
 					<th>Commerical</th>
 					<th>ID</th>
 					<th>isValid</th>
-					<th>Visits</th>
-					<th>Avg. Rating <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
+					<th>Visits <button id="visitsAsc"> &#9650</button><button id="visitsDsc"> &#9660</button></th>
+					<th>Avg. Rating <button id="ratingAsc"> &#9650</button> <button id="ratingDsc"> &#9660</button></th>
 				</tr>
 			</thead>
 			
@@ -257,13 +257,123 @@
 				var attribute = $("#homescreenOwnerTable th.selected th").eq(0).html();
 				console.log(attribute);
 			}
-/*
-			window.onload = function() {
-				console.log("tryna fetch da session")
-				var session = localStorage.getItem("session");
-    			console.log(session);
-			};
-*/
+
+			var index;
+			$("button").click(function() {
+				if (this.id == "nameAsc") {
+					index = 0;
+					console.log(index);
+					sortAsc(index);
+				} else if (this.id == "cityAsc") {
+					index = 2;
+					console.log(index);
+					sortAsc(index);
+				} else if (this.id == "typeAsc") {
+					index = 5;
+					console.log(index);
+					sortAsc(index);
+				} else if (this.id == "visitsAsc") {
+					index = 10;
+					console.log(index);
+					sortAsc(index);
+				} else if (this.id == "ratingAsc") {
+					index = 11;
+					console.log(index);
+					sortAsc(index);
+				} else if (this.id == "nameDsc") {
+					index = 0;
+					console.log(index);
+					sortDsc(index);
+				} else if (this.id == "cityDsc") {
+					index = 2;
+					console.log(index);
+					sortDsc(index);
+				} else if (this.id == "typeDsc") {
+					index = 5;
+					console.log(index);
+					sortDsc(index);
+				} else if (this.id == "visitsDsc") {
+					index = 10;
+					console.log(index);
+					sortDsc(index);
+				} else if (this.id == "ratingDsc") {
+					index = 11;
+					console.log(index);
+					sortDsc(index);
+				}
+			});
+
+			function sortAsc(index) {
+				console.log("sort button clicked");
+				var table, rows, switching, i, x, y, shouldSwitch;
+				table = document.getElementById("homescreenOwnerTable");
+				switching = true;
+				/*Make a loop that will continue until
+				no switching has been done:*/
+				while (switching) {
+					//start by saying: no switching is done:
+					switching = false;
+					rows = table.getElementsByTagName("TR");
+					/*Loop through all table rows (except the
+					first, which contains table headers):*/
+					for (i = 1; i < (rows.length - 1); i++) {
+						//start by saying there should be no switching:
+						shouldSwitch = false;
+						/*Get the two elements you want to compare,
+						one from current row and one from the next:*/
+						x = rows[i].getElementsByTagName("TD")[index];
+						y = rows[i + 1].getElementsByTagName("TD")[index];
+						//check if the two rows should switch place:
+						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch= true;
+							break;
+						}
+					}
+					if (shouldSwitch) {
+						/*If a switch has been marked, make the switch
+						and mark that a switch has been done:*/
+						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+						switching = true;
+					}
+				}
+			}
+
+			function sortDsc(index) {
+				console.log("sort button clicked");
+				var table, rows, switching, i, x, y, shouldSwitch;
+				table = document.getElementById("homescreenOwnerTable");
+				switching = true;
+				/*Make a loop that will continue until
+				no switching has been done:*/
+				while (switching) {
+					//start by saying: no switching is done:
+					switching = false;
+					rows = table.getElementsByTagName("TR");
+					/*Loop through all table rows (except the
+					first, which contains table headers):*/
+					for (i = 1; i < (rows.length - 1); i++) {
+						//start by saying there should be no switching:
+						shouldSwitch = false;
+						/*Get the two elements you want to compare,
+						one from current row and one from the next:*/
+						x = rows[i].getElementsByTagName("TD")[index];
+						y = rows[i + 1].getElementsByTagName("TD")[index];
+						//check if the two rows should switch place:
+						if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+							//if so, mark as a switch and break the loop:
+							shouldSwitch= true;
+							break;
+						}
+					}
+					if (shouldSwitch) {
+						/*If a switch has been marked, make the switch
+						and mark that a switch has been done:*/
+						rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+						switching = true;
+					}
+				}
+			}
 		</script>
 	</body>
 
