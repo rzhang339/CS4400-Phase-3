@@ -9,6 +9,8 @@ class Property():
     @staticmethod
     def add_property():
         if 'user' in session.keys():
+            user = session['user']
+            username = user['username']
             parsed_json = request.get_json()
             propertyName = parsed_json['propertyName']
             isPublic = parsed_json['isPublic']
@@ -18,7 +20,9 @@ class Property():
             city = parsed_json['city']
             zip = parsed_json['zip']
             propertyType = parsed_json['propertyType']
-            ownedBy = parsed_json['ownedBy']
+            ownedBy = username
+
+            print (isPublic);
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
             sql_string = "SELECT MAX(id) FROM Property"
@@ -31,10 +35,10 @@ class Property():
                 id  = str(int(max_id['MAX(id)']) + 1)
 
             sql_string = "INSERT INTO Property (propertyName, id, isPublic, size, isCommercial, streetAddress, city, zip, propertyType, ownedBy) VALUES ('" \
-                    + propertyName + "', '" + id + "', '" + isPublic + "', '" \
-                    + size + "', '" + isCommercial + "', '" + streetAddress + "', '" \
+                    + propertyName + "', '" + id + "', " + isPublic + ", '" \
+                    + size + "', " + isCommercial + ", '" + streetAddress + "', '" \
                     + city + "', '" + zip + "', '" + propertyType + "', '" + ownedBy + "');"
-            console.log(sql_string);
+            #console.log(sql_string);
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:

@@ -23,6 +23,7 @@
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
+            console.log("fuck this shit")
             
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
@@ -127,35 +128,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>A garden</td>
-					<td>Garden's addr</td>
-					<td>Kels City</td>
-					<td>111111</td>
-					<td>3</td>
-					<td>Garden</td>
-					<td>True</td>
-					<td>False</td>
-					<td>00400</td>
-					<td>True</td>
-					<td>3</td>
-					<td>4.7</td>
-				</tr>
-				<tr>
-					<td>A farm</td>
-					<td>Farm's addr</td>
-					<td>ZZZ</td>
-					<td>222222</td>
-					<td>20</td>
-					<td>Orchard</td>
-					<td>False</td>
-					<td>True</td>
-					<td>12345</td>
-					<td>False</td>
-					<td>0</td>
-					<td>5</td>
-				</tr>
-
 			</tbody>
 		</table></center>
 		<br>
