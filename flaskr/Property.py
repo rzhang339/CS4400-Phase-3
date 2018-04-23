@@ -73,7 +73,7 @@ class Property():
     def get_user_properties():
         if 'user' in session.keys():
             user = session['user']
-            email = user['email']
+            username = user['username']
             parsed_json = request.get_json()
             sort_by = parsed_json['sort_by']
             order = parsed_json['order']
@@ -83,7 +83,7 @@ class Property():
                     + " FROM Property LEFT JOIN " \
                     + "(SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings " \
                     + "FROM Visits Group By id) as temp ON Property.id = temp.id " \
-                    + "WHERE ownedBy = '" + email + "' "\
+                    + "WHERE ownedBy = '" + username + "' "\
                     + "ORDER BY " + sort_by + " " + order
             print (sql_string)
             try:
@@ -325,7 +325,3 @@ app.add_url_rule('/get_properties_from_attribute', 'get_properties_from_attribut
 app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_property_by_id, methods=['POST'])
 app.add_url_rule('/get_detailed_property', 'get_detailed_property', Property.get_detailed_property, methods=['POST'])
 app.add_url_rule('/get_unconfirmed_properties', 'get_unconfirmed_properties', Property.get_unconfirmed_properties, methods=['GET'])
-
-
-
-
