@@ -19,14 +19,12 @@
         dataType: "text",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
             console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
             $.each(j, function(i, item) {
             	
             	console.log(item);
@@ -82,15 +80,16 @@
 		</table></center>
 		<br>
 		<div class="search">
-			<center><p><select>
+			<center><p><select id="searchPropertiesDropdown">
 				<option selected>Search by...</option>
 				<option value="propertyName">Name</option>
-				<option value="city">City</option>
+				<option value="zip">Zip</option>
 				<option value="propertyType">Type</option>
-				<option value="visits">Visits</option>
+				<option value="approvedBy">Verified By</option>
+				<option value="avgRating">Average Rating</option>
 			</select></p></center>
-			<p><input type="text" name="searchInput" placeholder="Search Term"></p>
-			<p><button id="searchPropertiesButton" type="button">Search Properties</button></p>
+			<p><input type="text" id="searchInput" placeholder="Search Term"></p>
+			<p><button id="searchPropertiesButton" type="button" onclick="searchProperty()">Search Properties</button></p>
 		</div>
 		<div class="adminActions">
 			<p><button id="manageSelectedPropertyButton" type="button">Manage Selected Property</button></p>
@@ -103,6 +102,68 @@
 				};
 			</script>
 		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+		<script type="text/javascript">
+		function searchProperty() {
+				var selectedType = $('select[id=searchPropertiesDropdown]').val();
+				var searchTerm = document.getElementById('searchInput').value;
+				console.log(selectedType);
+				console.log(searchTerm);
+				var items = [];
+				$('#confirmedPropertiesTable tbody tr td:nth-child(9)').each( function(){
+	   				//add item to array
+	   				console.log("HOLLA ATCHA");
+	   				items.push( $(this).text() );       
+				});
+				console.log(items);
+				var search_info = {
+					attribute: selectedType,
+					value: searchTerm,
+					sort_by: selectedType,
+					order: "asc"
+				};
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:5000/get_properties_from_attribute",
+				    data: JSON.stringify(search_info),
+				    //async: false,
+				    contentType: "application/json;charset=utf-8",
+				    dataType: "text",
+				    success: function(text) {
+				        console.log("yay");
+				        console.log(text);
+				        // response = text;
+				        // console.log(response);
+				    },
+				    complete: function(response) {
+				        $("#resp onsecontainer").html(response);
+			            console.log(response.responseText)
+			           	var j = JSON.parse(response.responseText);
+			            var trHTML = '';
+
+			            $.each(j, function(i, item) {
+			            	var isPublic = "False";
+			            	var isCommercial = "False";
+			            	if (item.isPublic == "\u0001") {
+			            		isPublic = "True";
+			            	}
+			            	if (item.isCommercial == "\u0001") {
+			            		isCommercial = "True";
+			            	}
+			            	if (jQuery.inArray(String(item.id), items) !== -1) {
+								$('<tr>').html(
+			        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#confirmedPropertiesTable');
+
+							}
+						});
+				    }
+				});
+			}
+		</script>
 	</body>
 
 </html>
