@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+	<head>
+		<title>Manage Property</title>
+		<center><h1>Manage ______</h1></center>
+	</head>
+
+
+	<body>
+		<center><form>
+		<p>Name: <input type="text" name="gardenName"><label id="type">Type:</label></p>
+		<p>Address<input type="text" name="gardenAddress">
+			Public:<select>
+			<option value="publicTrue">True</option>
+			<option value="publicFalse">False</option>
+		</select>
+		</p>
+		<p>City: <input type="text" name="city"> 
+			Commercial:<select>
+			<option value="commercialTrue">True</option>
+			<option value="commercialFalse">False</option>
+		</select></p>
+		<p>zip: <input type="text" name="zip">ID</p>
+		<p>Size(acres):<input type="text" name="acres"></p>
+		<p>Add new crop:<select id="cropList">
+			<option value="" selected disabled hidden>Select Approved Crop</option>
+		  	<option value="Brocolli">Brocolli</option>
+		 	<option value="Peppers">Peppers</option>
+		 	<option value="Corn">Corn</option>
+
+		</select> Crops:<select id="addedCrops"></select></p>
+		<p><button id="addCropButton" type="button" onclick="addCrop()">Add Crop to Property</button><button id="removeCropButton" type="button" onclick="removeCrop()">Remove Crop</button></p>
+		<p>Request crop approval:<input type="text" name="cropApproval"><select id="approvedCrops">
+			<option value="" selected disabled hidden>New Crop Type</option>
+			<option value = "Corn">Corn</option>
+		</select></p>
+
+		<p><button id="submitRequest" type="button">Submit Request</button></p>
+		<p><button id="saveChanges" type="button">Save Changes</button></p>
+		<p><button id="deletePropertyButton" type="button">Delete Property</button>
+		<button id="backButtton" type="button">Back (Don't Save)</button></p>
+		</form></center>
+		<script>
+			function addCrop() {
+				var x = document.getElementById("cropList").value;
+				var m = document.getElementById("addedCrops");
+				var option = document.createElement("option");
+				option.text = x;
+				m.add(option);
+			
+			}
+
+			function removeCrop() {
+				var x = document.getElementById("addedCrops");
+				x.remove(x.selectedIndex);
+			}
+		
+		</script>
+	</body>
+</html>

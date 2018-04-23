@@ -50,17 +50,35 @@ class User():
         cursor.close()
         if user is not None:
             print (user)
+
             if 'user' in session.keys():
                 return "Already Logged In"
             user['email'] = email
             session['user'] = user
+            print(session.keys())
+            session.modified = True
+            session.permanent = True
             return user['userType']
         else:
             return "Invalid Login"
 
     @staticmethod
     def logout():
+        '''try:
+          #if 'user_id' in session:
+          # user = User.query.get(session['user_id'])
+          # user.current_user = False
+          # user.save()
+          print("Logged out: %s | %s" % (session.pop('user_id'), 
+                                         session.pop('user')))
+            return True
+        except:
+            return False'''
+
+    
+        print(len(session.keys()))
         if 'user' not in session.keys():
+
             return "Already Logged Out"
         else:
             session.pop('user', None)
