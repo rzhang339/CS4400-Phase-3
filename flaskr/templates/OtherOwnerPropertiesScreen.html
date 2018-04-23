@@ -19,19 +19,26 @@
         dataType: "text",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
+            
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
-            console.log(response.responseText);
+            
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+            
             $.each(j, function(i, item) {
             	
-            	console.log(item);
+            	var isPublic = "False";
+            	var isCommercial = "False";
+            	if (item.isPublic == "\u0001") {
+            		isPublic = "True";
+            	}
+            	if (item.isCommercial == "\u0001") {
+            		isCommercial = "True";
+            	}
     			$('<tr>').html(
-        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + item.isPublic + "</td><td>" + item.isCommercial + "</td><td>" + item.id + "</td><td>" + item.approvedBy + "</td><td>" + item.visits + "</td><td>" + item.avgRating + "</td>").appendTo('#otherUserPropertyTable');
+        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#otherUserPropertyTable');
 			});
 			
        		
@@ -39,6 +46,7 @@
 
 	    });
 	});
+</script>
 	<head>
 		<title>Owner Other </title>
 		<style type="text/css">
@@ -122,11 +130,12 @@
 		</div>
 		<div class="ownerActions">
 			<center><p><button id="viewPropertyDetailsButton" type="button">View Property Details</button></p>
-			<p><button id="backButton" type="button">Back</button></p></center>
+			<p><button id="backButton" type="button" onclick="goBack()">Back</button></p></center>
 			<script type="text/javascript">
-				document.getElementById('backButton').onclick = function() {
-					location.href="HomescreenQwner.html";
-				};
+				function goBack() {
+					location.href='/';
+				}
+				
 			</script>
 		</div>
 		<div id="propertyDetails" class="popup">

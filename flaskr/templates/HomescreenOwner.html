@@ -20,19 +20,26 @@
         dataType: "text",   //expect html to be returned                
         success: function(response){                    
             $("#responsecontainer").html(response); 
-            alert(response);
+            
         },
         complete: function(response){                    
             $("#responsecontainer").html(response); 
-            console.log(response.responseText);
+            
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+            
             $.each(j, function(i, item) {
+            	var isPublic = "False";
+            	var isCommercial = "False";
+            	if (item.isPublic == "\u0001") {
+            		isPublic = "True";
+            	}
+            	if (item.isCommercial == "\u0001") {
+            		isCommercial = "True";
+            	}
             	
-            	console.log(item);
     			$('<tr>').html(
-        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + item.isPublic + "</td><td>" + item.isCommercial + "</td><td>" + item.id + "</td><td>" + item.approvedBy + "</td><td>" + item.visits + "</td><td>" + item.avgRating + "</td>").appendTo('#homescreenOwnerTable');
+        		"<td>" + item.propertyName + "</td><td>" + item.streetAddress + "</td><td>" + item.city + "</td><td>" + item.zip + "</td><td>" + item.size + "</td><td>" + item.propertyType + "</td><td>" + isPublic + "</td><td>" + isCommercial + "</td><td>" + item.id + "</td><td>" + item.isApproved + "</td><td>" + item.visits + "</td><td>" + item.ratings + "</td>").appendTo('#homescreenOwnerTable');
 			});
 			
        		
@@ -95,37 +102,7 @@
 					<th>Avg. Rating <button id="asc"> &#9650</button> <button id="desc"> &#9660</button></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td>A garden</td>
-					<td>Garden's addr</td>
-					<td>ATL</td>
-					<td>111111</td>
-					<td>3</td>
-					<td>Garden</td>
-					<td>True</td>
-					<td>False</td>
-					<td>00400</td>
-					<td>True</td>
-					<td>3</td>
-					<td>4.7</td>
-				</tr>
-				<tr>
-					<td>A farm</td>
-					<td>Farm's addr</td>
-					<td>ATL</td>
-					<td>222222</td>
-					<td>20</td>
-					<td>Farm</td>
-					<td>False</td>
-					<td>True</td>
-					<td>12345</td>
-					<td>False</td>
-					<td>0</td>
-					<td>N/A</td>
-				</tr>
-
-			</tbody>
+			
 		</table></center>
 		<br>
 
@@ -267,7 +244,7 @@
 			}
 
 			function navToViewOtherPropertiesScreen() {
-				location.href= "OtherOwnerPropertiesScreen.html";
+				location.href= '/Owner/OtherOwnerProperties';
 			}
 
 			function navToAddPropertyScreen() {

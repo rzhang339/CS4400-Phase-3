@@ -42,5 +42,13 @@ def register_owner():
 def register_visitor():
 	return render_template('VisitorRegistration.html')
 
+@app.route('/Owner/OtherOwnerProperties')
+def nav_to_other_owner_properties():
+	return render_template('OtherOwnerPropertiesScreen.html')
+
+@app.route('/')
+def nav_to_homescreen_owner():
+	return render_template('HomescreenOwner.html')
+
 if __name__ == '__main__':
 	app.run()
