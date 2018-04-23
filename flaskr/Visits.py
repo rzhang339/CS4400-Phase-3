@@ -88,29 +88,33 @@ class Visits():
     # this isn't right i tried to implement it to fill the visitors in system table
     @staticmethod
     def get_visitors():
-        cursor = db.cursor(pymysql.cursors.DictCursor)
-        sql_string = "select User.username, email, count(*) as visitCount"\
-        + "from User left join Visits on User.username = Visits.username"\
-        + "where userType = 'visitor' Group by Visits.username;"
+        if 'user' in session.keys():
+            cursor = db.cursor(pymysql.cursors.DictCursor)
+            sql_string = "select User.username, email, count(*) as visitCount "\
+            + "from User left join Visits on User.username = Visits.username "\
+            + "where userType = 'visitor' Group by Visits.username;"
 
-        try:
-            cursor.execute(sql_string)
-        except (pymysql.Error, pymysql.Warning) as e:
-            print (e)
-            return
+            try:
+                cursor.execute(sql_string)
+            except (pymysql.Error, pymysql.Warning) as e:
+                print (e)
+                return
 
-        visits = cursor.fetchall()
-        list = []
-        for visit in visits:
-            print (visit)
-            dict = {
-                "username": str(visit['username']),
-                "email": str(visit['email']),
+            visits = cursor.fetchall()
+            list = []
+            for visit in visits:
+                print (visit)
+                dict = {
+                "username": visit['username'],
+                "email": visit['email'],
                 "visitCount": visit['visitCount']
-            }
-            list.append(dict)
+                }
+                list.append(dict)
             return_string = json.dumps(list, sort_keys=True, indent=4, separators=(',', ': '))
+            print (return_string)
             return return_string
+        else:
+            return "not logged in"
 
 
 app.add_url_rule('/add_visit', 'add_visit', Visits.add_visit, methods=['POST'])

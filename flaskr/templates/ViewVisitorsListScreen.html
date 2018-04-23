@@ -12,21 +12,21 @@
 
       $.ajax({    //create an ajax request to display.php
 
-        type: "POST",
+        type: "GET",
         url: "http://localhost:5000/get_visitors",
-        data: JSON.stringify(dic),
-        contentType: "application/json;charset=utf-8",
+        // data: JSON.stringify(dic),
+        // contentType: "application/json;charset=utf-8",
         dataType: "text",   //expect html to be returned
         success: function(response){
             $("#responsecontainer").html(response);
-            alert(response);
+            //alert(response);
         },
         complete: function(response){
             $("#responsecontainer").html(response);
             console.log(response.responseText);
            	var j = JSON.parse(response.responseText);
             var trHTML = '';
-            alert(response);
+            //alert(response);
             $.each(j, function(i, item) {
 
             	console.log(item);
@@ -92,7 +92,7 @@
 
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">		</script>
 		<script type="text/javascript">
-						var index;
+			var index;
 			$("button").click(function() {
 				if (this.id == "usernameAsc") {
 					index = 0;
@@ -124,7 +124,7 @@
 			function sortAsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("viewVisitorsListTable");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -160,7 +160,7 @@
 			function sortDsc(index) {
 				console.log("sort button clicked");
 				var table, rows, switching, i, x, y, shouldSwitch;
-				table = document.getElementById("homescreenOwnerTable");
+				table = document.getElementById("viewVisitorsListTable");
 				switching = true;
 				/*Make a loop that will continue until
 				no switching has been done:*/
@@ -192,6 +192,9 @@
 					}
 				}
 			}
+
+            
+
 		</script>
 	</body>
 
