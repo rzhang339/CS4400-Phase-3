@@ -395,3 +395,4 @@ app.add_url_rule('/get_property_by_id', 'get_property_by_id', Property.get_prope
 app.add_url_rule('/get_detailed_property', 'get_detailed_property', Property.get_detailed_property, methods=['POST'])
 app.add_url_rule('/get_unconfirmed_properties', 'get_unconfirmed_properties', Property.get_unconfirmed_properties, methods=['GET'])
 app.add_url_rule('/update_multiple_attributes', 'update_multiple_attributes', Property.update_multiple_attributes, methods=['POST'])
+app.add_url_rule('/get_user_properties_from_attribute', 'get_user_properties_from_attribute', Property.get_user_properties_from_attribute, methods=['POST'])
