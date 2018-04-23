@@ -84,6 +84,23 @@ class User():
             session.pop('user', None)
             return "logout"
 
+    @staticmethod
+    def remove_user():
+        parsed_json = request.get_json()
+        email = parsed_json['email']
+        
+        cursor = db.cursor()
+        sql_string = "DELETE FROM User WHERE email = '" + email + "';"
+
+        try:
+            cursor.execute(sql_string)
+        except (pymysql.Error, pymysql.Warning) as e:
+            cursor.close()
+            return "Invalid"
+
+        cursor.close()
+        return "removed"
+
 
     @staticmethod
     def get_session():
@@ -99,4 +116,5 @@ app.add_url_rule('/register', 'register', User.register, methods=['POST'])
 app.add_url_rule('/login', 'login', User.login, methods=['POST'])
 app.add_url_rule('/logout', 'logout', User.logout, methods=['GET'])
 app.add_url_rule('/get_session', 'get_session', User.get_session, methods=['GET'])
+app.add_url_rule('/remove_user', 'remove_user', User.remove_user, methods=['POST'])
 

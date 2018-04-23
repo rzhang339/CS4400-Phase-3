@@ -140,8 +140,12 @@ class Property():
             order = parsed_json['order']
 
             cursor = db.cursor(pymysql.cursors.DictCursor)
-            sql_string = "SELECT * from Property where ownedBy != '" \
-                    + email + "' ORDER BY " + sort_by + " " + order
+            sql_string = "SELECT propertyName, streetAddress, city, zip, size, propertyType, isPublic, CASE WHEN approvedBy IS NULL THEN 'False' ELSE 'True' END AS isApproved, isCommercial, Property.id, IFNULL(numVisits, 0) AS visits, ratings" \
+                    + " FROM Property LEFT JOIN " \
+                    + "(SELECT id, COUNT(*) AS numVisits, AVG(rating) AS ratings " \
+                    + "FROM Visits Group By id) as temp ON Property.id = temp.id " \
+                    + "WHERE ownedBy != '" + email + "' "\
+                    + "ORDER BY " + sort_by + " " + order
 
             try:
                 cursor.execute(sql_string)
@@ -152,17 +156,18 @@ class Property():
             dict_json = []
             for property in properties:
                 property_dict = {
-                    "propertyName": property['propertyName'],
+                   "propertyName": property['propertyName'],
                     "id": property['id'],
-                    "isPublic": property['isPublic'].decode('utf-8'),
+                    "isPublic": property['isPublic'].decode(),
                     "size": property['size'],
-                    "isCommercial": property['isCommercial'].decode('utf-8'),
+                    "isCommercial": property['isCommercial'].decode(),
                     "streetAddress": property['streetAddress'],
                     "city": property['city'],
                     "zip": property['zip'],
                     "propertyType": property['propertyType'],
-                    "ownedBy": property['ownedBy'],
-                    "approvedBy": property['approvedBy']
+                    "isApproved": property['isApproved'],
+                    "visits": property['visits'],
+                    "ratings": str(property['ratings'])
                 }
                 dict_json.append(property_dict)
             return_string = json.dumps(dict_json, sort_keys=True, indent=4, separators=(',', ': '))
