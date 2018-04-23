@@ -97,14 +97,14 @@ class Visits():
             cursor.execute(sql_string)
         except (pymysql.Error, pymysql.Warning) as e:
             print (e)
-        return
+            return
 
         visits = cursor.fetchall()
         list = []
         for visit in visits:
             print (visit)
             dict = {
-                "username": visit['username'],
+                "username": str(visit['username']),
                 "email": str(visit['email']),
                 "visitCount": visit['visitCount']
             }
@@ -116,3 +116,4 @@ class Visits():
 app.add_url_rule('/add_visit', 'add_visit', Visits.add_visit, methods=['POST'])
 app.add_url_rule('/get_user_visits', 'get_user_visits', Visits.get_user_visits, methods=['GET'])
 app.add_url_rule('/remove_visit', 'remove_visit', Visits.remove_visit, methods=['POST'])
+app.add_url_rule('/get_visitors', 'get_visitors', Visits.get_visitors, methods=['GET'])
