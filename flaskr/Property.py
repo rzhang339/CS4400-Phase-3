@@ -34,7 +34,7 @@ class Property():
                     + propertyName + "', '" + id + "', '" + isPublic + "', '" \
                     + size + "', '" + isCommercial + "', '" + streetAddress + "', '" \
                     + city + "', '" + zip + "', '" + propertyType + "', '" + ownedBy + "');"
-
+            console.log(sql_string);
             try:
                 cursor.execute(sql_string)
             except (pymysql.Error, pymysql.Warning) as e:

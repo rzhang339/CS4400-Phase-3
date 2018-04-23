@@ -77,35 +77,32 @@
 				<script type="text/javascript">
 			function add() {
 			
-				location.href('/');
+				
 			
 				var dic = {
-					'propertyName': document.getElementById("propertyname").value,
+					'propertyName': document.getElementById('propertyName').value,
 					'isPublic': document.getElementById('isPublic').value,
 					'size': document.getElementById('acres').value,
 					'isCommercial': document.getElementById('isCommercial').value,
 					'streetAddress': document.getElementById('streetAddress').value,
 					'city': document.getElementById('city').value,
 					'zip': document.getElementById('zip').value,
-					'propertyType': document.getElementById('propertyType').value
+					'propertyType': document.getElementById('propertyType').value,
 					'ownedBy': "Bob"
-				}
+				};
 
 		      $.ajax({    //create an ajax request to display.php
-
+		      	
 		        type: "POST",
 		        url: "http://localhost:5000/add_property",  
 		        data: JSON.stringify(dic),
 		        contentType: "application/json;charset=utf-8",       
 		        dataType: "text",   //expect html to be returned                
-		        success: function(response){                    
-		            $("#responsecontainer").html(response); 
-		            
-		        }
+		        
 	    
 
 		    });
-			
+			location.href= '/';
 		}
 </script>
 	</body>
